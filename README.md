@@ -1,4 +1,8 @@
-# Booked, but no room: check-in denial at OYO
+# OYO Check-in Denial — Product Case Study
+
+**[View Live Case Study](https://vanshhgupta.github.io/oyo-case-study/)**
+
+---
 
 An independent student product case study, not affiliated with OYO. Start with `index.html` (it opens `case-study/index.html`).
 
