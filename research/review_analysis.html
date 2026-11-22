@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What 2,031 guest reviews and 398 hotel-owner reviews say about arriving at an OYO</title>
+<style>
+:root{--ink:#1d1b26;--muted:#5d5a6b;--line:#e4e1ea;--bg:#f7f6f2;--card:#ffffff;--accent:#4338ca;--warm:#b45309;--code:#efedf5}
+@media (prefers-color-scheme: dark){:root{--ink:#ecebf2;--muted:#aaa7b8;--line:#2e2c3a;--bg:#14131b;--card:#1c1b25;--accent:#a5b4fc;--warm:#f5b25b;--code:#24232f}}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:22px 16px 72px}
+a{color:var(--accent)} h1{font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 18px}
+h2{font-size:22px;margin-top:38px;padding-top:14px;border-top:1px solid var(--line)} h3{font-size:18px;margin-top:26px}
+.tablewrap{overflow-x:auto;margin:12px 0} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600}
+blockquote{margin:14px 0;padding:8px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 8px 8px 0}
+code{background:var(--code);border-radius:4px;padding:0 4px;font-size:90%} pre{background:var(--code);padding:12px;overflow-x:auto;border-radius:8px}
+.back{font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+</style></head>
+<body><main>
+<p class="back"><a href="../case-study/index.html">← Back to the case study</a><span>Independent student case study · not affiliated with OYO</span></p>
+<h1>What 2,031 guest reviews and 398 hotel-owner reviews say about arriving at an OYO</h1>
+<!-- METHOD-NOTE:START -->
+<p><strong>How the reviews were coded.</strong> The reviews were coded by an AI model (Claude, made by Anthropic) against a written codebook, not by hand. Human validation of a random sample of 100 coded reviews is pending. Until it is done, treat every count from the reviews as AI-coded and not yet checked by a person.</p>
+<!-- METHOD-NOTE:END -->
+
+<h2>1. The data</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Guest app</th>
+<th>Partner (hotel-owner) app</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App</td>
+<td>"OYO : Hotel Booking App", <code>com.oyo.consumer</code></td>
+<td>"Co-OYO", <code>com.oyo.partnerapp</code></td>
+</tr>
+<tr>
+<td>Publisher on Google Play</td>
+<td>PRISM: Hotels, Homes &amp; Experiences in 35 Countries</td>
+<td>same</td>
+</tr>
+<tr>
+<td>How the app ID was confirmed</td>
+<td>Play Store search for "OYO hotel booking" and "OYO partner"; both apps list the same publisher</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Reviews collected</td>
+<td>12,000 most recent (Play Store, India store, English setting, newest first)</td>
+<td>all 913 the store returned</td>
+</tr>
+<tr>
+<td>Window</td>
+<td>19 May 2025 to 20 November 2026</td>
+<td>October 2018 to October 2026 (most from 2019 to 2022)</td>
+</tr>
+<tr>
+<td>Filter</td>
+<td>5+ words and an arrival-stage keyword (check-in, denied, no room, extra money, refund, closed, couple, ID and similar)</td>
+<td>5+ words</td>
+</tr>
+<tr>
+<td>Reviews coded</td>
+<td>2,031 candidates, of which 1,632 described a specific problem</td>
+<td>398, of which 181 described a business problem (not just app bugs)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Scripts: <code>scrape_reviews.py</code> (collection), <code>filter_reviews.py</code> (keyword filter), <code>analyse_guest.py</code> and <code>analyse_owner.py</code> (counts). The coding rules are in <code>codebook.md</code>; the codes are in <code>coding/</code>; the joined data are <code>guest_reviews.csv</code> and <code>owner_reviews.csv</code>; every number below is in <code>review_stats.json</code> or <code>owner_stats.json</code>.</p>
+<h2>2. What these reviews can and cannot tell us</h2>
+<ul>
+<li><strong>Reviewers skew angry.</strong> 30% of the 12,000 guest reviews are 1-star, and 93% of the denial reviews are. People whose check-in went smoothly rarely write about it.</li>
+<li><strong>Reviews show which problems exist and how they feel. They do not show how often a problem happens per booking.</strong> "37% of complaints" is not "37% of bookings". Nothing here gives a denial rate per booking; only OYO has that.</li>
+<li><strong>The keyword filter misses some complaints</strong> (a review that says only "worst app" is not in the set) and catches some praise, which was coded <code>X</code> and excluded.</li>
+<li><strong>The guest side is a reviewer's account.</strong> When a review says "the hotel said it was full", that is what the guest was told, not proof of why.</li>
+<li><strong>The owner data are thin and older.</strong> Only 90 of the 398 coded owner reviews are from 2023 or later, and 178 are about the app being slow or broken. Owner numbers here are directional.</li>
+<li><strong>One coder, and it was an AI model.</strong> See the method note above. A 100-review validation sample is in <code>validation/</code>.</li>
+<li><strong>Some reviews are from outside India</strong> (mostly Indonesia, also Malaysia and the US). They were kept because the same app serves them. A keyword check finds 44 of the 600 denial reviews (7%) are clearly non-Indian, many of them about properties that had left OYO. Dropping them changes little: denials are 35.5% of problems instead of 36.8%, the four main reasons still split roughly evenly, and the "decided before arrival" share is 72% instead of 73% (<code>review_stats.json</code>, "robustness").</li>
+</ul>
+<h2>3. Guest side: what went wrong</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Issue (one per review)</th>
+<th style="text-align: right;">Reviews</th>
+<th style="text-align: right;">Share of 1,632</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Denied at the property</strong></td>
+<td style="text-align: right;"><strong>600</strong></td>
+<td style="text-align: right;"><strong>36.8%</strong></td>
+</tr>
+<tr>
+<td>Extra charge at the desk, guest stayed or outcome not stated</td>
+<td style="text-align: right;">298</td>
+<td style="text-align: right;">18.3%</td>
+</tr>
+<tr>
+<td>Room quality</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">14.6%</td>
+</tr>
+<tr>
+<td>Listing mismatch (photos, amenities, location)</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">9.7%</td>
+</tr>
+<tr>
+<td>Refund after the guest cancelled</td>
+<td style="text-align: right;">155</td>
+<td style="text-align: right;">9.5%</td>
+</tr>
+<tr>
+<td>Other booking problem</td>
+<td style="text-align: right;">126</td>
+<td style="text-align: right;">7.7%</td>
+</tr>
+<tr>
+<td>Cancelled or moved by the hotel or OYO before arrival</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">3.4%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>The working title holds.</strong> Being refused a confirmed room is the single largest arrival-stage complaint, about twice the next one, and its share is steady across the window (33% to 40% in each half-year: see <code>review_stats.json</code>). The neighbouring problems considered as alternatives (listing mismatch, refund after cancellation, extra charges) are each smaller. Extra charges matter, but they are mostly the same dispute as one kind of denial (section 5), so they are folded into this study rather than treated as a rival topic.</p>
+<h2>4. Guest side: why the hotel said no</h2>
+<p>The reason the hotel gave, as the guest reports it, for the 600 denials:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Reason the hotel gave</th>
+<th style="text-align: right;">Reviews</th>
+<th style="text-align: right;">Share of 600</th>
+<th style="text-align: right;">Share of the 479 with a stated reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Property closed, missing, or no longer with OYO</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: right;">20.5%</td>
+<td style="text-align: right;">25.7%</td>
+</tr>
+<tr>
+<td>No record of the booking, or "we don't accept OYO bookings"</td>
+<td style="text-align: right;">117</td>
+<td style="text-align: right;">19.5%</td>
+<td style="text-align: right;">24.4%</td>
+</tr>
+<tr>
+<td>Price dispute: "can't give it at this price", pay more or leave</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">18.3%</td>
+<td style="text-align: right;">23.0%</td>
+</tr>
+<tr>
+<td>No room: full, sold to someone else, overbooked</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: right;">17.7%</td>
+<td style="text-align: right;">22.1%</td>
+</tr>
+<tr>
+<td>ID, couple or other house rule</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">2.5%</td>
+<td style="text-align: right;">3.1%</td>
+</tr>
+<tr>
+<td>Hotel says it has a payment or contract dispute with OYO</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1.3%</td>
+<td style="text-align: right;">1.7%</td>
+</tr>
+<tr>
+<td>No reason stated</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: right;">20.2%</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>No single cause dominates.</strong> Four causes each account for roughly a quarter of stated reasons. This matters for the solution: a fix aimed at only one cause (say, overbooking) would leave three quarters of the problem untouched.</p>
+<p><strong>But three of the four share something.</strong> In a closed or delisted property, a hotel that refuses OYO bookings, and a hotel that will not honour the app price, the hotel's "no" already existed before the guest set out. Together these are <strong>350 of 479 stated reasons (73%)</strong>. Only "no room" (22%) is plausibly a same-day surprise, and some of those were not surprises either:</p>
+<blockquote>
+<p>"Before 1week called them to confirm the details and the manager/ receptionist whoever....saying that all rooms are full" (guest review, row 713)</p>
+<p>"I called &amp; enquired previous day about the booking, I was assured that rooms were available. When I went for check in Manager denied it." (row 599)</p>
+</blockquote>
+<p>The second quote is the opposite case: a hotel that said yes the day before and no at the desk. A pre-arrival check would not catch it, which is why the solution also needs a rescue.</p>
+<p>ID and couple rules, often assumed to be the main cause of denials at OYO, are only 3% of stated reasons in this window.</p>
+<p><strong>Other details from the denial reviews</strong></p>
+<ul>
+<li>40% (242 of 600) mention that the booking was prepaid or paid online. The guest's money is already with OYO.</li>
+<li>9% (56) mention arriving at night or after midnight.</li>
+<li>6% (38) say they paid the extra amount the hotel demanded to get a room.</li>
+</ul>
+<h2>5. The bridge to extra charges</h2>
+<p>The 110 "price dispute" denials and the 298 "extra charge" reviews are the same conversation with a different ending: the hotel rejects the app price, and the guest either leaves (a denial) or pays (an extra charge). Together they are <strong>408 reviews, 25% of all problems</strong>. This is where the guest side meets the owner side (section 7).</p>
+<blockquote>
+<p>"Sir, a room cannot be provided at such a low price. If you want the room, you will have to pay an extra ₹300." (row 1075, the hotel staff's words as the guest reports them)</p>
+</blockquote>
+<h2>6. Guest side: what happened after the guest asked for help</h2>
+<p>This is the comparison that is least affected by reviewer bias, because the same bias applies to every issue type in the same sample. For each issue, the share of reviews that also complain about how it was handled afterwards (refund late, refused or only as OYO wallet money; support unreachable or unhelpful):</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Issue</th>
+<th style="text-align: right;">Reviews</th>
+<th style="text-align: right;">Also complain about handling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Denied at the property</strong></td>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;"><strong>56.0%</strong></td>
+</tr>
+<tr>
+<td>Cancelled or moved before arrival</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">39.3%</td>
+</tr>
+<tr>
+<td>Listing mismatch</td>
+<td style="text-align: right;">159</td>
+<td style="text-align: right;">37.1%</td>
+</tr>
+<tr>
+<td>Extra charge at the desk</td>
+<td style="text-align: right;">298</td>
+<td style="text-align: right;">30.5%</td>
+</tr>
+<tr>
+<td>Room quality</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">21.0%</td>
+</tr>
+</tbody>
+</table></div>
+<p>(Refund-after-cancellation and "other" are left out: a complaint about handling is part of how those two are defined, at 85.8% and 59.5%.)</p>
+<p><strong>A guest who is denied a room is 2.7 times as likely to complain about the follow-up as a guest with a dirty room.</strong> That is the rescue failing, on top of the original failure.</p>
+<p>What the 600 denial reviews say happened next (a review can say several things; 66% describe some outcome):</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th style="text-align: right;">Reviews</th>
+<th style="text-align: right;">Share of 600</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Refund refused, or money described as lost</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: right;">25.0%</td>
+</tr>
+<tr>
+<td>Support unreachable (hold, disconnected, chatbot only)</td>
+<td style="text-align: right;">101</td>
+<td style="text-align: right;">16.8%</td>
+</tr>
+<tr>
+<td>Support reached but did not solve it</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">15.0%</td>
+</tr>
+<tr>
+<td>Refund pending or late</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">6.7%</td>
+</tr>
+<tr>
+<td>Paid the extra to get a room</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">6.3%</td>
+</tr>
+<tr>
+<td><strong>Rebooked at another property</strong></td>
+<td style="text-align: right;"><strong>31</strong></td>
+<td style="text-align: right;"><strong>5.2%</strong></td>
+</tr>
+<tr>
+<td>Eventually let in at the same property</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">4.5%</td>
+</tr>
+<tr>
+<td>Refund only as OYO wallet money or a voucher</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">2.8%</td>
+</tr>
+<tr>
+<td>Refund received</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1.3%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Only 58 of 600 (9.7%) say they ended up with a bed through OYO or the hotel</strong> (rebooked or let in). Within denials, the worst-handled cause is the property that is gone: 75% of those reviews complain about handling, the highest of any reason, against 44% for price disputes. When there is no one at the desk, the guest's only counterparty is OYO.</p>
+<p>The sample also contains a cluster of 5-star reviews that thank a named OYO support agent for solving a denial or a refund within "30 minutes", which suggests an existing escalation team. Some of these may be prompted by a review campaign; they are coded like any other review.</p>
+<h2>7. Owner side: what hotel owners say about OYO</h2>
+<p>Of the 398 coded Co-OYO reviews, 178 are about the app being slow or buggy; these cluster in late 2018 and late 2022, when reviewers say an older owner app was replaced. The 181 that describe a business problem:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>What the owner complains about</th>
+<th style="text-align: right;">Reviews</th>
+<th style="text-align: right;">Share of 181</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payouts late, held or missing</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">30.9%</td>
+</tr>
+<tr>
+<td>Partner support unreachable or unhelpful</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">29.3%</td>
+</tr>
+<tr>
+<td>Deductions, penalties and commission higher than agreed</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">27.6%</td>
+</tr>
+<tr>
+<td>OYO sets or cuts the room price below what the owner wants</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">22.1%</td>
+</tr>
+<tr>
+<td>Bookings: "fake" bookings, bookings checked in by OYO staff, bookings not shown</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">17.1%</td>
+</tr>
+<tr>
+<td>Wants to leave OYO, or cannot get out of the contract</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">5.5%</td>
+</tr>
+<tr>
+<td>Cannot control inventory</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">4.4%</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>68% (123 of 181) are about money: what OYO pays, what it deducts, and what price it sells the room at.</strong> Since 2023 the mix shifts towards deductions (49% of 45 recent business reviews) and distrust of bookings (29%).</p>
+<p>In the owners' own words:</p>
+<blockquote>
+<p>"i give room for 2400 at my property, I was given a price of 1400 on oyo ... all of a sudden my price was dropped to 876." (Co-OYO review, 2026)</p>
+<p>"Hotel set rate above 1500 but booking received 650 or 700." (Co-OYO review, 2020)</p>
+<p>"The rates settled with hotel at the time of signing the contract are all declined to there minimum low value without intimating the hotel owners." (Co-OYO review, 2019)</p>
+</blockquote>
+<p>Owners also describe being charged for guests who never arrived and for bookings checked in by OYO staff, which explains why some front desks treat an OYO booking with suspicion rather than as a firm reservation.</p>
+<h2>8. What the two sides say together</h2>
+<p>Read separately, the guest reviews list four different reasons for a denial. Read next to the owner reviews, they look like one pattern: <strong>the owner does not regard an OYO booking, at OYO's price, as something it agreed to.</strong> The owner's grievances are about price and money; the hotel's most common stated reasons at the desk are a refused price, a refused channel ("we don't accept OYO"), and a relationship that has already ended. The front desk is the one point in the journey where the owner, not OYO, decides, so that is where the disagreement surfaces, with a guest standing at the counter.</p>
+<p>This is an interpretation, not something the reviews prove. It is the reading that fits both data sets, and it is the one the strategy documents test.</p>
+<h2>9. Cross-check: consumer courts and a complaint forum</h2>
+<p>A second, independent public source points the same way (details and links in <code>sources.md</code>, section D).</p>
+<ul>
+<li><strong>Consumer commissions.</strong> Twelve decisions on OYO check-in denials were verified from orders or full press reports. The hotel reasons the commissions recorded are the same causes as in the reviews: the contract had ended or the hotel had "no association with OYO", a payment dispute with OYO, extra money demanded, full, or no record of the booking. In every reported decision on the merits that was found, OYO's "only a booking platform" defence was rejected.</li>
+<li><strong>Complaint forum.</strong> Of 40 check-in-denial complaints on consumercomplaints.in (read in full, mostly from 2022–2023), 17 involve a payment or contract dispute between OYO and the hotel, 15 guests were asked for more money at the desk, and OYO offered another hotel in only 4. In 6, the booking was later marked "checked in" or "no-show" and the refund refused on that basis.</li>
+<li><strong>What it adds:</strong> the rescue rate (4 of 40, 10%) is close to the reviews' 10%, from a different population and period; and the dispute between OYO and the owner is visible in adjudicated cases, not only in angry reviews.</li>
+<li><strong>Limits:</strong> courts and forums show the extreme tail, most incidents are older than the review window, and neither measures how often denials happen.</li>
+</ul>
+<h2>10. Quotes used on the case study page</h2>
+<p>Every quote on the page is checked against <code>guest_reviews.csv</code> or <code>owner_reviews.csv</code> by <code>check_quotes.py</code>, which fails if any quoted text is not found verbatim in the data.</p>
+</main></body></html>

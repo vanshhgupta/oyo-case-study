@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feature audit: what happens today when a guest is denied check-in</title>
+<style>
+:root{--ink:#1d1b26;--muted:#5d5a6b;--line:#e4e1ea;--bg:#f7f6f2;--card:#ffffff;--accent:#4338ca;--warm:#b45309;--code:#efedf5}
+@media (prefers-color-scheme: dark){:root{--ink:#ecebf2;--muted:#aaa7b8;--line:#2e2c3a;--bg:#14131b;--card:#1c1b25;--accent:#a5b4fc;--warm:#f5b25b;--code:#24232f}}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:22px 16px 72px}
+a{color:var(--accent)} h1{font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 18px}
+h2{font-size:22px;margin-top:38px;padding-top:14px;border-top:1px solid var(--line)} h3{font-size:18px;margin-top:26px}
+.tablewrap{overflow-x:auto;margin:12px 0} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600}
+blockquote{margin:14px 0;padding:8px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 8px 8px 0}
+code{background:var(--code);border-radius:4px;padding:0 4px;font-size:90%} pre{background:var(--code);padding:12px;overflow-x:auto;border-radius:8px}
+.back{font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+</style></head>
+<body><main>
+<p class="back"><a href="../case-study/index.html">← Back to the case study</a><span>Independent student case study · not affiliated with OYO</span></p>
+<h1>Feature audit: what happens today when a guest is denied check-in</h1>
+<p>The first interview question is "OYO already handles this, so what is new?". This document answers it from OYO's own public pages, then compares Booking.com, Airbnb, MakeMyTrip and Goibibo. Every excerpt below was read on the live page during the data collection window; the items marked ✔ were re-fetched and checked word for word a second time. Source links are in <code>sources.md</code>.</p>
+<h2>1. What OYO promises the guest</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Question</th>
+<th>What OYO's pages say</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Is the guest promised a room or a replacement?</td>
+<td><strong>Yes, firmly, in the Terms of Use:</strong> "If any check-in is denied for a confirmed booking, OYO shall ensure that User is provided with an alternate accommodation of comparable standards." If it cannot, "OYO shall arrange for the refund of any pre booking amount". ✔</td>
+<td>Terms of Use, clause 4 (page shows "Last updated: 25/05/2026")</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>More softly, in the Guest Policy:</strong> OYO first verifies with the hotel, then "will try" the same hotel, then "will try" another OYO property, and otherwise "you may be offered full refund". ✔</td>
+<td>Guest Policy</td>
+</tr>
+<tr>
+<td>How does the guest report it?</td>
+<td>Contact OYO "immediately" by the 24x7 helpline or the support page. The web help page asks only for a booking ID. There is no denial-specific hotline.</td>
+<td>Guest Policy; Terms of Use 4.6</td>
+</tr>
+<tr>
+<td>Compensation beyond the room?</td>
+<td>No: "OYO will not be liable for compensation beyond your booking payment." ✔</td>
+<td>Guest Policy</td>
+</tr>
+<tr>
+<td>Who pays for a pricier replacement or the cab to it?</td>
+<td><strong>Not stated</strong> anywhere public.</td>
+<td>—</td>
+</tr>
+<tr>
+<td>How fast?</td>
+<td><strong>No time limit</strong> for relocation. Refunds in general: "within 7-14 working days". A separate "Service On-Time" promise (resolution within 1 hour, otherwise a refund) covers "selected hotels" in six cities and "any issue related to your stay"; it does not say whether denial is covered.</td>
+<td>Guest Policy</td>
+</tr>
+<tr>
+<td>Refund to source or to OYO Money?</td>
+<td>Not stated for denials.</td>
+<td>—</td>
+</tr>
+<tr>
+<td>How long does the guest have to complain?</td>
+<td>The two pages disagree. Terms of Use clause 17: a refund request can be raised "within 7 days from your checkout date". Guest Policy: "No complaint would be entertained post check out."</td>
+<td>Terms of Use; Guest Policy</td>
+</tr>
+<tr>
+<td>When does the guest get nothing?</td>
+<td>If the hotel refuses unmarried couples or local IDs (the policy says this is shown before booking), if the guest lacks a valid original ID, or "if the Hotel is suspicious of the Guests check-in": "OYO shall be under no obligation to refund any amount to the Guest." ✔</td>
+<td>Guest Policy, Cancellation Policy points 3 and 4</td>
+</tr>
+<tr>
+<td>Pay-at-hotel bookings</td>
+<td>May be "put on hold or cancelled" if the guest does not answer OYO's confirmation calls. A guest can arrive believing a pay-at-hotel booking is confirmed when it is not.</td>
+<td>Guest Policy, Contact Policies</td>
+</tr>
+</tbody>
+</table></div>
+<h2>2. What OYO's partner terms say to the hotel owner</h2>
+<p>These are the most important findings in the audit.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Excerpt</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Denial is already forbidden.</strong></td>
+<td>The owner "shall not deny check-in to any OYO customer under any circumstances at the Property" ✔</td>
+<td>Partner Terms of Service (India), 2.G "Assured Check-in"</td>
+</tr>
+<tr>
+<td><strong>The owner already pays for relocation.</strong></td>
+<td>"the cost of shifting or relocating such OYO customers, cost of compensating the OYO customers for inconvenience ... shall be solely borne by the OYO Patron" ✔</td>
+<td>same</td>
+</tr>
+<tr>
+<td><strong>Penalties are deducted from payouts.</strong></td>
+<td>"OYO has the right to offset/adjust such amounts against monies due or payable to the OYO Patron and reserves the right to levy penalties"</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Denial can get the listing suspended.</td>
+<td>"denial of check in to guests who have valid bookings/ reservations" is a listed reason for suspension ✔</td>
+<td>Partner ToS 2.I, item 14</td>
+</tr>
+<tr>
+<td><strong>OYO, not the owner, sets the price.</strong></td>
+<td>"OYO shall have exclusive rights to determine the pricing of Contracted Rooms" ✔. The prospectus adds that owners get "a limited degree of flexibility... to set prices within a specified range" ✔</td>
+<td>Partner ToS 2.F; UDRHP-I</td>
+</tr>
+<tr>
+<td><strong>OYO controls the inventory.</strong></td>
+<td>OYO "will manage and be responsible for complete revenue, pricing, inventory, and booking management for 100% of the Contracted Rooms inventory" ✔</td>
+<td>Partner ToS, OTA clause</td>
+</tr>
+<tr>
+<td>Owner must honour the voucher.</td>
+<td>"shall honour all the commitments made in the booking voucher at all times" ✔</td>
+<td>Partner ToS 2.J</td>
+</tr>
+<tr>
+<td>A stated penalty, for one campaign only</td>
+<td>Denying check-in on "Free Room Night" bookings costs the operator "10x of ARR" (ten times the average room rate) ✔</td>
+<td>Terms of Use page, operator policy table</td>
+</tr>
+<tr>
+<td>Consumer-court costs</td>
+<td>OYO can recover from the operator all costs of a consumer-forum claim caused by a denial attributable to the operator</td>
+<td>Terms of Use page, clause 36</td>
+</tr>
+<tr>
+<td>The penalty schedule itself</td>
+<td>The partner ToS refers to "OYO Policies" for penalty amounts. The linked domain did not resolve, and no schedule was found anywhere public.</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>What the owner's app offers</strong> (Co-OYO, Google Play listing): booking and reservation management; "Manage room availability, sellable status, and room occupancy"; a "real-time view of live escalations from customers who are at your property"; guest call-picked rate; a "3C score"; daily payouts; price selection from a range with a suggested price. ✔ <strong>The listing describes no step where the owner accepts or confirms an individual booking.</strong> That fits the partner terms, under which OYO controls pricing and inventory.</p>
+<h2>3. So what is new?</h2>
+<p>On paper, OYO already has the three things a student would propose first: a guest promise ("shall ensure... alternate accommodation"), an owner ban ("shall not deny... under any circumstances"), and an owner penalty (relocation costs, penalties offset against payouts, suspension).</p>
+<p>The reviews show that these do not work at the moment of truth: only 5% of denied guests describe being rebooked (<code>review_analysis.md</code>, section 6). Three gaps explain why the paper rules fail, and they are what this case study works on:</p>
+<ol>
+<li><strong>The owner is never asked.</strong> OYO sets the price (owners can move it only within a range OYO sets) and sells the room on the owner's behalf, and no step asks the owner to confirm a booking before the guest travels. The first time the owner can say no is at the desk.</li>
+<li><strong>The guest's promise has no clock.</strong> "Shall ensure" has no time limit, no stated owner of the price difference, and no in-app path built for someone standing at a counter at night.</li>
+<li><strong>The penalty arrives as one more deduction.</strong> Penalties are offset against payouts under a schedule that is not public. Owners already describe deductions as opaque and unfair (28% of owner business complaints, 49% since 2023). A bigger hidden penalty is unlikely to change behaviour, and likely to deepen the distrust that drives some refusals.</li>
+</ol>
+<h2>4. What I could not see</h2>
+<ul>
+<li>The in-app "Need help" flow after a booking ID is entered (it needs a real booking), whether a "check-in denied" issue type exists, and its internal time targets.</li>
+<li>Whether OYO pays for the replacement room or transport in practice, and how often it relocates rather than refunds.</li>
+<li>The penalty schedule ("OYO Policies"), the 3C or quality score rules, and whether a denial affects ranking.</li>
+<li>What Co-OYO shows the owner during a "live escalation", and whether any owners are asked to accept bookings.</li>
+<li>Internal denial rates.</li>
+</ul>
+<p>These are the first questions to ask anyone who works at OYO, and they are listed as open questions in the PRD.</p>
+<h2>5. How others handle a host or hotel that refuses a confirmed booking</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Who must rebook the guest</th>
+<th>Who pays</th>
+<th>Time limit</th>
+<th>Penalty on the host or hotel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Booking.com</strong></td>
+<td>The property: "it's your responsibility to find your guest accommodation elsewhere, of the same or a better standard – and cover the costs." ✔ Booking.com customer service also contacts both sides.</td>
+<td>Property pays the replacement and transport ("organise transport... or you might have to reimburse it later") ✔</td>
+<td>For relocations on the day or within 24 hours of check-in, <strong>30 minutes</strong> ✔ (2 hours if 1 to 7 days out, 24 hours if more)</td>
+<td>Commission is still charged on overbookings unless the property has had no more than four in 12 months ✔</td>
+</tr>
+<tr>
+<td><strong>Airbnb</strong></td>
+<td>Airbnb offers rebooking or a refund when a "Host fails to provide their guest access"; guests must report within 72 hours ✔</td>
+<td>Airbnb "may, but [is] not obligated to" contribute to the new booking; the host's payout is reduced by the refund</td>
+<td>—</td>
+<td>Host cancellation fee: 50% of the reservation if 48 hours or less before check-in ✔ (minimum $50), the calendar is blocked for those dates, and the host can lose Superhost status or the listing</td>
+</tr>
+<tr>
+<td><strong>MakeMyTrip</strong></td>
+<td>"similar alternate accommodation at the discretion of MMT (subject to availability at that time), or refunding the booking amount"</td>
+<td>Not stated</td>
+<td>None</td>
+<td>Not public. "Hotels reserves the sole right of admission"</td>
+</tr>
+<tr>
+<td><strong>Goibibo</strong></td>
+<td>Same wording as MakeMyTrip</td>
+<td>Not stated</td>
+<td>None</td>
+<td>Not public. Its "goStays" assurance covers amenities (AC, TV, WiFi, clean rooms), not check-in</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>What carries over:</strong> Booking.com shows that a firm clock (30 minutes on the day) and costs charged to the property can coexist with a large hotel supply. Airbnb shows the value of a penalty that rises as check-in approaches, which rewards a host for saying no early. Neither asks the hotel to re-confirm each booking before arrival; Booking.com and Airbnb hotels and hosts set their own prices and availability, so the "owner never agreed" gap is much smaller there. That gap is specific to OYO's model.</p>
+</main></body></html>

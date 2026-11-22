@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metrics, experiment and risks</title>
+<style>
+:root{--ink:#1d1b26;--muted:#5d5a6b;--line:#e4e1ea;--bg:#f7f6f2;--card:#ffffff;--accent:#4338ca;--warm:#b45309;--code:#efedf5}
+@media (prefers-color-scheme: dark){:root{--ink:#ecebf2;--muted:#aaa7b8;--line:#2e2c3a;--bg:#14131b;--card:#1c1b25;--accent:#a5b4fc;--warm:#f5b25b;--code:#24232f}}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:22px 16px 72px}
+a{color:var(--accent)} h1{font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 18px}
+h2{font-size:22px;margin-top:38px;padding-top:14px;border-top:1px solid var(--line)} h3{font-size:18px;margin-top:26px}
+.tablewrap{overflow-x:auto;margin:12px 0} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600}
+blockquote{margin:14px 0;padding:8px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 8px 8px 0}
+code{background:var(--code);border-radius:4px;padding:0 4px;font-size:90%} pre{background:var(--code);padding:12px;overflow-x:auto;border-radius:8px}
+.back{font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+</style></head>
+<body><main>
+<p class="back"><a href="../case-study/index.html">← Back to the case study</a><span>Independent student case study · not affiliated with OYO</span></p>
+<h1>Metrics, experiment and risks</h1>
+<h2>1. North-star metric</h2>
+<p><strong>Kept promises: the share of prepaid bookings where the guest sleeps in a confirmed room at the price they paid, without paying anything extra at the desk.</strong> The room can be at the booked hotel or one OYO arranged before the stay.</p>
+<p><strong>Why this one.</strong> It is the promise the product exists to keep, in the guest's terms. It rises when a denial is prevented, when a denied guest is rescued, and when an extra-charge demand is stopped, so it rewards all three parts of RoomReady. It cannot be gamed by refunding people: a refunded guest has no room and counts as a broken promise.</p>
+<p><strong>Its weakness.</strong> It is close to 100% and moves in hundredths of a percent, so it is a poor day-to-day steering metric. It can be inflated by moving guests to other hotels too freely (a move counts as kept), which is why the early-move rate is a guardrail. And "paid nothing extra" needs a post-stay question or a desk report to measure, so it is partly self-reported.</p>
+<h2>2. Fast leading indicator</h2>
+<p><strong>Confirmation rate by deadline</strong>: the share of prepaid bookings the owner confirms by the handshake deadline (6 hours before check-in). It moves within a day of launch, it is fully measured in the owner app, and it predicts the north star: a booking confirmed early is the cheapest kept promise.</p>
+<h2>3. Supporting metrics</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Desk denials per 1,000 prepaid bookings</td>
+<td>The thing being prevented</td>
+</tr>
+<tr>
+<td>Median and 90th-percentile minutes from desk report to a confirmed bed</td>
+<td>The rescue clock (target: median ≤ 15, p90 ≤ 30)</td>
+</tr>
+<tr>
+<td>Share of desk reports resolved within 15 minutes</td>
+<td>Whether the promise on the screen is true</td>
+</tr>
+<tr>
+<td>Guests moved before travel, and share who accept the move</td>
+<td>Prevention working, and whether the offered rooms are good enough</td>
+</tr>
+<tr>
+<td>Refund-to-source time for denied guests</td>
+<td>The money half of the promise</td>
+</tr>
+<tr>
+<td>90-day repeat booking rate of guests who had a denial or an early move</td>
+<td>The long-run value in the impact model</td>
+</tr>
+<tr>
+<td>Support contacts per denial</td>
+<td>Cost and guest effort</td>
+</tr>
+</tbody>
+</table></div>
+<h2>4. Guardrails</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Guardrail</th>
+<th>Limit for the pilot</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Extra declines</strong>: decline rate in treatment minus the denial rate in control</td>
+<td>≤ 0.15% of bookings (base case); kill above 0.3%</td>
+<td>The biggest risk in the impact model: a free "no" gets used</td>
+</tr>
+<tr>
+<td><strong>Net cost per 1,000 prepaid bookings</strong> (top-ups + rescues − recoveries)</td>
+<td>Within the base case in <code>impact_model.xlsx</code></td>
+<td>Keeps it a break-even project, not a subsidy</td>
+</tr>
+<tr>
+<td><strong>Owner churn</strong>: properties leaving per month</td>
+<td>Not more than 0.5 percentage points above control</td>
+<td>A fix that drives supply away is a failure</td>
+</tr>
+<tr>
+<td><strong>Owner disputes</strong>: appeals per 1,000 bookings, and share of appeals upheld</td>
+<td>Appeals upheld ≤ 20%</td>
+<td>High upheld appeals mean the evidence is wrong and penalties are unfair</td>
+</tr>
+<tr>
+<td><strong>Abuse</strong>: desk reports per 1,000 prepaid bookings, and share where the location check fails or the hotel shows the guest was checked in</td>
+<td>Reports ≤ 2× control's denial contacts; failed checks ≤ 10%</td>
+<td>Stops the rescue becoming a free upgrade</td>
+</tr>
+<tr>
+<td><strong>Early-move rate</strong></td>
+<td>≤ 1.5% of bookings</td>
+<td>Moves are cheap but not free, and too many make the north star meaningless</td>
+</tr>
+</tbody>
+</table></div>
+<h2>5. Experiment</h2>
+<p><strong>Unit of randomisation: the property.</strong> The handshake and the penalty rules change what the owner does, so one hotel cannot run two rule sets for different guests without confusion and spillover. Randomising by guest or booking would contaminate both arms. Properties are stratified by city and by their past denial-related complaints so that the arms are balanced.</p>
+<p><strong>Control:</strong> today's flow (no handshake; existing support; existing penalties). <strong>Treatment:</strong> RoomReady for prepaid bookings (handshake, Desk Rescue, fair-penalty ledger, listing pause).</p>
+<p><strong>Duration:</strong> 8 weeks of bookings, with a further 12 weeks of follow-up for the 90-day repeat rate. Eight weeks covers weekdays, weekends and at least one holiday peak, when the "full" cause is most likely.</p>
+<p><strong>Sample size (back of the envelope)</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Desk denial rate in control</td>
+<td>0.4% of prepaid bookings</td>
+<td>Assumption (impact model base case)</td>
+</tr>
+<tr>
+<td>Smallest effect worth detecting</td>
+<td>30% fewer desk denials (0.4% → 0.28%)</td>
+<td>Judgement: below this, the base case loses money</td>
+</tr>
+<tr>
+<td>Significance and power</td>
+<td>5% two-sided, 80%</td>
+<td>Convention</td>
+</tr>
+<tr>
+<td>Bookings per arm if bookings were independent</td>
+<td>(1.96 + 0.84)² × (0.004 × 0.996 + 0.0028 × 0.9972) ÷ 0.0012² ≈ <strong>36,900</strong></td>
+<td>Two-proportion formula</td>
+</tr>
+<tr>
+<td>Prepaid bookings per property in 8 weeks</td>
+<td>≈ 180</td>
+<td>35.1 million bookings a year ÷ 14,937 India hotels × 8/52 × 50% assumed prepaid</td>
+</tr>
+<tr>
+<td>Intra-property correlation</td>
+<td>0.01</td>
+<td>Assumption</td>
+</tr>
+<tr>
+<td>Design effect</td>
+<td>1 + (180 − 1) × 0.01 ≈ 2.8</td>
+<td>Cluster adjustment</td>
+</tr>
+<tr>
+<td><strong>Bookings per arm</strong></td>
+<td>≈ <strong>103,000</strong></td>
+<td>36,900 × 2.8</td>
+</tr>
+<tr>
+<td><strong>Properties per arm</strong></td>
+<td>≈ <strong>570</strong></td>
+<td>103,000 ÷ 180</td>
+</tr>
+</tbody>
+</table></div>
+<p>About 1,150 properties in total, roughly 8% of OYO's India hotels: three or four large cities would be enough.</p>
+<p><strong>Decision rules</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Result</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Desk denials fall by at least 25% (significant), median minutes to a bed ≤ 15, extra declines ≤ 0.15% of bookings, net cost within the base case, owner churn within the guardrail</td>
+<td><strong>Ship</strong> to all prepaid bookings, then test pay-at-hotel</td>
+</tr>
+<tr>
+<td>Denials fall, but extra declines are 0.15–0.3% or cost is above the base case</td>
+<td><strong>Iterate</strong>: tighten the free-decline limit, move the deadline closer to arrival, or limit top-ups, and rerun for 4 weeks</td>
+</tr>
+<tr>
+<td>Extra declines above 0.3% of bookings, owner churn up by more than 0.5 points a month, or desk denials fall by less than 10%</td>
+<td><strong>Kill</strong> the handshake; keep Desk Rescue only if its clock is met</td>
+</tr>
+</tbody>
+</table></div>
+<h2>6. Main risks</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owners confirm everything without looking ("rubber-stamping"), then refuse at the desk anyway</td>
+<td>The ledger charges a confirmed-then-refused booking; the leading indicator is watched alongside desk denials, not alone</td>
+</tr>
+<tr>
+<td>Owners use the free "no" to keep rooms for walk-ins</td>
+<td>Free declines capped at 1 in 20 bookings; above that, ranking falls; measured as the extra-decline guardrail</td>
+</tr>
+<tr>
+<td>Guests abuse the desk button for an upgrade</td>
+<td>Location check, a call to the hotel, and the hotel's check-in record; repeat reporters reviewed by an agent</td>
+</tr>
+<tr>
+<td>No comparable room nearby at night (the hard case)</td>
+<td>Refund to source starts at once; farther room with cab both ways; reimbursement up to a cap; honest screen instead of a spinner</td>
+</tr>
+<tr>
+<td>Small owners do not use the app daily</td>
+<td>An automated phone call with keypad answer as the fallback channel; the deadline reminder 2 hours ahead</td>
+</tr>
+<tr>
+<td>Penalties feel like one more opaque deduction</td>
+<td>Each charge is its own line with the evidence, and a 48-hour appeal reviewed by a person</td>
+</tr>
+<tr>
+<td>Bookings from other travel sites (OTAs) are outside the flow</td>
+<td>Pilot covers OYO's own channels first; OTA bookings follow if the pilot ships</td>
+</tr>
+<tr>
+<td>The base-case economics are thin</td>
+<td>The pilot measures the two inputs that decide them (extra declines and early-move acceptance) before any wider launch</td>
+</tr>
+</tbody>
+</table></div>
+</main></body></html>

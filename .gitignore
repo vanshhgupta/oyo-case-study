@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+# Working notes and large downloaded filings (not part of the published site)
+research/raw/
+# The AI's codes for the validation sample: keep hidden until the sample has been coded
+research/validation/answer_key.csv

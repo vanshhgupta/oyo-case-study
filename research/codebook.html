@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codebook for OYO guest and partner app reviews</title>
+<style>
+:root{--ink:#1d1b26;--muted:#5d5a6b;--line:#e4e1ea;--bg:#f7f6f2;--card:#ffffff;--accent:#4338ca;--warm:#b45309;--code:#efedf5}
+@media (prefers-color-scheme: dark){:root{--ink:#ecebf2;--muted:#aaa7b8;--line:#2e2c3a;--bg:#14131b;--card:#1c1b25;--accent:#a5b4fc;--warm:#f5b25b;--code:#24232f}}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:22px 16px 72px}
+a{color:var(--accent)} h1{font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 18px}
+h2{font-size:22px;margin-top:38px;padding-top:14px;border-top:1px solid var(--line)} h3{font-size:18px;margin-top:26px}
+.tablewrap{overflow-x:auto;margin:12px 0} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600}
+blockquote{margin:14px 0;padding:8px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 8px 8px 0}
+code{background:var(--code);border-radius:4px;padding:0 4px;font-size:90%} pre{background:var(--code);padding:12px;overflow-x:auto;border-radius:8px}
+.back{font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+</style></head>
+<body><main>
+<p class="back"><a href="../case-study/index.html">← Back to the case study</a><span>Independent student case study · not affiliated with OYO</span></p>
+<h1>Codebook for OYO guest and partner app reviews</h1>
+<p>This codebook was written after reading the first 70 guest-review candidates and then applied to every candidate. One denial reason (<code>dues</code>) and three hard-case rules were added while coding; after coding finished, all rows were searched by keyword for the new reason so that earlier rows were treated the same way. <strong>The first-pass coding was done by an AI model (Claude, made by Anthropic) following this codebook, not by a person.</strong> A random sample of 100 coded guest reviews is set aside in <code>validation/</code> so that a person can code it blind and measure agreement. Until that check has been run, treat every count below as AI-coded and unvalidated.</p>
+<p>Each guest review gets four fields: one <strong>issue</strong>, a <strong>denial reason</strong> (only for issue <code>D</code>), zero or more <strong>handling</strong> tags, and two <strong>flags</strong>.</p>
+<h2>1. Issue (one per review)</h2>
+<p>Pick the issue that broke the stay. If a review mentions several, use this order of precedence: D, C, E, L, Q, R, O.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Name</th>
+<th>Use when</th>
+<th>Do not use when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D</code></td>
+<td>Denied at the property</td>
+<td>The guest had a booking, reached (or was about to reach) the property, and did not get a room on the booked terms: turned away, told there is no booking, told to pay more or leave, refused under an ID or couple rule, or the property was closed, missing or no longer with OYO.</td>
+<td>The guest stayed and only complains about paying extra (use <code>E</code>).</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>Cancelled or changed before arrival</td>
+<td>The hotel or OYO cancelled, moved or changed a confirmed booking before the guest arrived.</td>
+<td>The guest learned it only at the desk (use <code>D</code>).</td>
+</tr>
+<tr>
+<td><code>E</code></td>
+<td>Extra charge at the desk, guest stayed or no outcome given</td>
+<td>Asked at the property to pay more than the app price, and the review does not say the guest was turned away.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td>Listing mismatch</td>
+<td>The property or room is not what the listing showed: photos, amenities, name, location far from the pin, AC missing.</td>
+<td>Hygiene or broken items only (use <code>Q</code>).</td>
+</tr>
+<tr>
+<td><code>Q</code></td>
+<td>Room quality</td>
+<td>Dirty, broken, unsafe or noisy room, poor service during the stay.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td>Refund after the guest cancelled</td>
+<td>The guest cancelled, or the review is only about a refund, and the refund was late, refused or credited to the OYO wallet.</td>
+<td>The refund follows a denial or listing problem (code that issue, put the refund under handling).</td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td>Other booking problem</td>
+<td>Payment, booking changes, app pricing, staff conduct, early checkout, support-only complaints with a specific booking problem.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>Not relevant or not specific</td>
+<td>Praise, app usability, generic "fraud app" with no described event, non-OYO topics.</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<h2>2. Denial reason (issue <code>D</code> only, one per review)</h2>
+<p>Code the reason <strong>the hotel gave</strong>, as the guest reports it. If the hotel gave two, code the first one stated.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Reason</th>
+<th>Examples of what the guest reports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>full</code></td>
+<td>No room</td>
+<td>"rooms are full", "hotel is booked", "no room available", room given to someone else</td>
+</tr>
+<tr>
+<td><code>norec</code></td>
+<td>No record of the booking</td>
+<td>"booking not received", "we don't accept OYO / online bookings", "this booking is not ours"</td>
+</tr>
+<tr>
+<td><code>price</code></td>
+<td>Price dispute</td>
+<td>"can't give at this price", "pay ₹X more or leave", "promotional price not valid"</td>
+</tr>
+<tr>
+<td><code>rule</code></td>
+<td>ID, couple or house rule</td>
+<td>local ID refused, unmarried couple, marriage certificate demanded, original ID demanded</td>
+</tr>
+<tr>
+<td><code>gone</code></td>
+<td>Property gone</td>
+<td>closed, locked, not at the address, does not exist, no longer partnered with OYO</td>
+</tr>
+<tr>
+<td><code>dues</code></td>
+<td>Dispute with OYO</td>
+<td>the hotel says OYO has not paid it, or its contract terms with OYO are in dispute (added after row 199, the first case)</td>
+</tr>
+<tr>
+<td><code>unst</code></td>
+<td>Not stated</td>
+<td>the review says only that the room was denied</td>
+</tr>
+</tbody>
+</table></div>
+<h2>3. Handling (what happened after the guest asked for help; zero or more)</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rb</code></td>
+<td>OYO or the hotel arranged another room or property</td>
+</tr>
+<tr>
+<td><code>ok</code></td>
+<td>Eventually let in at the same property after calls or waiting</td>
+</tr>
+<tr>
+<td><code>rf</code></td>
+<td>Refund received</td>
+</tr>
+<tr>
+<td><code>rd</code></td>
+<td>Refund pending or delayed</td>
+</tr>
+<tr>
+<td><code>rr</code></td>
+<td>Refund refused, or the guest says the money is lost</td>
+</tr>
+<tr>
+<td><code>wl</code></td>
+<td>Refund given only as OYO wallet money or a voucher</td>
+</tr>
+<tr>
+<td><code>px</code></td>
+<td>Guest paid the extra amount to get the room</td>
+</tr>
+<tr>
+<td><code>su</code></td>
+<td>Support unreachable: calls on hold or cut, no reply, chatbot only</td>
+</tr>
+<tr>
+<td><code>sh</code></td>
+<td>Support reached but did not solve it: rude, blamed the hotel, asked for proof, "can't do anything"</td>
+</tr>
+</tbody>
+</table></div>
+<p>A review is a <strong>handling complaint</strong> if it has any of <code>rd</code>, <code>rr</code>, <code>wl</code>, <code>su</code> or <code>sh</code>.</p>
+<h2>4. Flags</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Set when the review says</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p</code></td>
+<td>the booking was prepaid or paid online</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>it happened at night, at midnight or late in the evening</td>
+</tr>
+</tbody>
+</table></div>
+<h2>Record format</h2>
+<p>One line per candidate in <code>coding/guest_tags.txt</code>: <code>row|issue|reason|handling|flags</code>, where <code>row</code> is the row number in <code>guest_reviews_filtered.csv</code>, and lists are comma-separated or <code>-</code> when empty. Example: <code>48|D|full|sh|p,n</code>.</p>
+<h2>Rules for hard cases</h2>
+<ul>
+<li>Reviews in Hindi, Hinglish or Indonesian are coded when the meaning is clear; otherwise <code>X</code>.</li>
+<li>A general statement that hotels refuse OYO bookings ("hotels don't allow check-in without extra money") counts as <code>D</code> only if it says the guest was refused; a general statement about extra money is <code>E</code>.</li>
+<li>"Money wasted" or "lost my money" counts as <code>rr</code>.</li>
+<li>When OYO "initiated a refund" that has not arrived, code <code>rd</code>.</li>
+<li>If the hotel says the booking or payment was "not received" and makes the guest pay again, code <code>D</code> with reason <code>norec</code> and handling <code>px</code>, even though the guest stayed. If the hotel only asks for more than the app price and the guest pays and stays, code <code>E</code>.</li>
+<li>A review that only praises a named support agent for a refund, with no problem described, is <code>R</code> with <code>rf</code>.</li>
+<li>Reviews by the property side posted on the guest app are <code>X</code>.</li>
+</ul>
+<h2>Partner (owner) app codebook</h2>
+<p>Each Co-OYO review gets one or more <strong>owner issue</strong> tags and one <strong>stance</strong> (<code>neg</code>, <code>pos</code>, <code>mixed</code>).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Owner issue</th>
+<th>Use when the owner says</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pay</code></td>
+<td>Payouts</td>
+<td>payments late, held, missing, settlement unclear</td>
+</tr>
+<tr>
+<td><code>ded</code></td>
+<td>Deductions and penalties</td>
+<td>penalties, fines, deductions, "chargeback", commission higher than agreed</td>
+</tr>
+<tr>
+<td><code>price</code></td>
+<td>Pricing control</td>
+<td>OYO sets or cuts room prices, discounts the owner did not agree to</td>
+</tr>
+<tr>
+<td><code>book</code></td>
+<td>Booking problems</td>
+<td>fake or unexpected bookings, bookings not shown, cancellations, booking sync with the front desk</td>
+</tr>
+<tr>
+<td><code>inv</code></td>
+<td>Inventory and room control</td>
+<td>cannot close rooms, block dates, mark rooms sold, update availability</td>
+</tr>
+<tr>
+<td><code>guest</code></td>
+<td>Guest disputes</td>
+<td>guest complaints judged against the owner, couple or ID disputes, guest misconduct</td>
+</tr>
+<tr>
+<td><code>supp</code></td>
+<td>Partner support</td>
+<td>relationship manager or support unreachable or unhelpful</td>
+</tr>
+<tr>
+<td><code>exit</code></td>
+<td>Leaving OYO</td>
+<td>wants to leave, contract termination, still listed after leaving</td>
+</tr>
+<tr>
+<td><code>app</code></td>
+<td>App works badly</td>
+<td>crashes, login, slow, OTP</td>
+</tr>
+<tr>
+<td><code>good</code></td>
+<td>Praise</td>
+<td>useful app, good earnings</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>Not relevant</td>
+<td>no clear meaning</td>
+</tr>
+</tbody>
+</table></div>
+<p>Record format in <code>coding/owner_tags.txt</code>: <code>row|tags|stance</code>.</p>
+</main></body></html>

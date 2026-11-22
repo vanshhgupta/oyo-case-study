@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoomReady Prototype</title>
+<meta name="description" content="Clickable prototype of RoomReady: a pre-arrival room confirmation and a desk rescue flow for a hotel-booking app. Independent student case study, not affiliated with OYO.">
+<style>
+:root{
+  --page:#eceae4; --ink:#1d1b26; --muted:#6b6878; --line:#e2dfe8; --phone:#111018;
+  --screen:#fbfaf8; --card:#ffffff; --accent:#4338ca; --accent-soft:#eceafe; --ok:#0f7a4f; --ok-soft:#e3f4ec;
+  --warn:#9a5b00; --warn-soft:#fff1dc; --bad:#b42318; --bad-soft:#fdeceb; --chip:#f0eef5;
+}
+@media (prefers-color-scheme: dark){
+  :root{--page:#0f0e14;--ink:#ecebf2;--muted:#a6a3b4;--line:#2d2b39;--phone:#000;--screen:#17161f;--card:#201f2b;
+  --accent:#a5b4fc;--accent-soft:#25234a;--ok:#5fd3a0;--ok-soft:#14302a;--warn:#f5b25b;--warn-soft:#352812;--bad:#f39b93;--bad-soft:#3a1c1a;--chip:#2a2936}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+.layout{display:flex;gap:28px;justify-content:center;align-items:flex-start;padding:22px 16px 40px;flex-wrap:wrap}
+.side{max-width:330px;flex:1 1 280px}
+.side h1{font-size:22px;margin:0 0 6px}
+.side p{margin:0 0 10px;color:var(--muted);font-size:14px}
+.side .disc{font-size:12.5px;border-top:1px solid var(--line);padding-top:10px;margin-top:14px}
+.jump{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.jump b{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+.jump button{all:unset;cursor:pointer;font-size:13.5px;padding:5px 9px;border-radius:7px;color:var(--ink)}
+.jump button:hover,.jump button.on{background:var(--accent-soft);color:var(--accent)}
+.phone{width:375px;max-width:100%;height:760px;background:var(--phone);border-radius:42px;padding:12px;box-shadow:0 18px 50px rgba(0,0,0,.25);flex:0 0 auto}
+.screen{width:100%;height:100%;background:var(--screen);border-radius:32px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.status{height:34px;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font-size:12.5px;font-weight:600}
+.app{flex:1;overflow-y:auto;padding:6px 18px 18px}
+.top{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
+.top .back{all:unset;cursor:pointer;font-size:20px;line-height:1;padding:2px 6px}
+.top .t{font-weight:700;font-size:16px}
+.brand{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h2{font-size:21px;line-height:1.2;margin:2px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.small{font-size:13px;color:var(--muted)}
+.pill{display:inline-block;font-size:12px;font-weight:700;border-radius:20px;padding:3px 10px}
+.p-wait{background:var(--warn-soft);color:var(--warn)} .p-ok{background:var(--ok-soft);color:var(--ok)} .p-bad{background:var(--bad-soft);color:var(--bad)} .p-acc{background:var(--accent-soft);color:var(--accent)}
+.btn{all:unset;box-sizing:border-box;display:block;width:100%;text-align:center;cursor:pointer;font-weight:700;border-radius:14px;padding:13px;margin:8px 0;font-size:15px}
+.b1{background:var(--accent);color:#fff} @media (prefers-color-scheme: dark){.b1{color:#15142a}}
+.b2{background:var(--chip);color:var(--ink)}
+.b3{border:1.5px solid var(--bad);color:var(--bad)}
+.sim{all:unset;cursor:pointer;display:block;text-align:center;font-size:12.5px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:8px;margin:6px 0}
+.sim:before{content:"▶ Simulate: "}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{all:unset;cursor:pointer;background:var(--chip);border-radius:20px;padding:7px 12px;font-size:13.5px}
+.chip.on{background:var(--accent);color:#fff}
+.timer{font-size:40px;font-weight:800;letter-spacing:.02em;text-align:center;margin:6px 0}
+.steps{list-style:none;padding:0;margin:8px 0}
+.steps li{display:flex;gap:10px;padding:7px 0;font-size:14px;border-bottom:1px solid var(--line)}
+.steps li:last-child{border:0}
+.dot{width:20px;height:20px;border-radius:50%;flex:0 0 20px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.d-ok{background:var(--ok-soft);color:var(--ok)} .d-now{background:var(--accent-soft);color:var(--accent)} .d-no{background:var(--chip);color:var(--muted)}
+.code{font-size:34px;font-weight:800;letter-spacing:.18em;text-align:center}
+.owner .brand{color:var(--warn)}
+.note{background:var(--accent-soft);border-radius:12px;padding:10px 12px;font-size:13px;margin:10px 0}
+.warnbox{background:var(--warn-soft);border-radius:12px;padding:10px 12px;font-size:13px;margin:10px 0}
+.opt{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px;margin:8px 0}
+.opt:hover{border-color:var(--accent)}
+.foot{font-size:11px;color:var(--muted);text-align:center;padding:6px 10px 10px}
+[hidden]{display:none!important}
+body.frameonly .side{display:none}
+body.frameonly .layout{padding:8px;justify-content:flex-start}
+body.frameonly{background:transparent}
+@media (max-width:440px){.layout{padding:10px 8px}.phone{height:740px;border-radius:30px;padding:8px}.screen{border-radius:24px}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <h1>RoomReady</h1>
+    <p>A clickable prototype for the case study "Booked, but no room". Tap the buttons on the phone, or jump to any screen below. Dashed buttons simulate what the hotel or OYO does.</p>
+    <nav class="jump" id="jump"></nav>
+    <p class="disc">Independent student case study. Not affiliated with, endorsed by or designed by OYO. Property names, guest names, codes and prices are invented; city names are real. The look is deliberately neutral.</p>
+  </aside>
+
+  <div class="phone"><div class="screen">
+    <div class="status"><span id="clock">2:10 PM</span><span>5G ▮▮▮ 61%</span></div>
+    <div class="app" id="app">
+
+<!-- ============ GUEST ============ -->
+<section data-s="g1" data-name="1. Booking confirmed" data-group="Guest">
+  <div class="top"><span class="brand">Your trip</span></div>
+  <h2>Saffron Courtyard, Jaipur</h2>
+  <div class="small">Tonight · 1 night · Check-in from 12:00 PM · 2 guests</div>
+  <div class="card">
+    <div class="row"><span>Paid online</span><b>₹1,240</b></div>
+    <div class="row small"><span>Booking</span><span>RR-48217</span></div>
+  </div>
+  <div class="card">
+    <div class="row"><b>Hotel confirmation</b><span class="pill p-wait">Waiting</span></div>
+    <p class="small" style="margin:6px 0 0">The hotel will confirm your room by <b>6:00 PM</b>. If it can't, we'll move you before you travel and tell you straight away.</p>
+  </div>
+  <button class="sim" data-go="g2" data-time="2:14 PM">the hotel confirms the room</button>
+  <button class="sim" data-go="g3" data-time="2:40 PM">the hotel says it can't honour the booking</button>
+  <button class="btn b3" data-go="g5" data-time="9:41 PM">I'm at the hotel and was refused</button>
+</section>
+
+<section data-s="g2" data-name="2. Room confirmed by hotel" data-group="Guest" hidden>
+  <div class="top"><button class="back" data-go="g1">‹</button><span class="t">Saffron Courtyard</span></div>
+  <span class="pill p-ok">✓ Room confirmed by the hotel at 2:14 PM</span>
+  <h2 style="margin-top:12px">Your room is ready</h2>
+  <div class="card">
+    <div class="row"><span>Deluxe AC room</span><b>₹1,240 paid</b></div>
+    <div class="small">The hotel has confirmed this booking at this price. Nothing more to pay at the desk.</div>
+  </div>
+  <div class="card">
+    <div class="small">Show at the desk</div>
+    <div class="code">4 8 2 1</div>
+  </div>
+  <button class="btn b2" data-go="g2">Arriving late? Tell the hotel</button>
+  <button class="btn b3" data-go="g5" data-time="9:41 PM">I'm at the hotel and was refused</button>
+</section>
+
+<section data-s="g3" data-name="3. Hotel can't honour: moved before travel" data-group="Guest" hidden>
+  <div class="top"><button class="back" data-go="g1">‹</button><span class="t">Change to your booking</span></div>
+  <span class="pill p-bad">Saffron Courtyard can't hold your room tonight</span>
+  <h2 style="margin-top:12px">You haven't travelled yet, so we've found you another room</h2>
+  <button class="opt" data-go="g4" data-time="2:43 PM">
+    <div class="row"><b>Neel Bagh Residency</b><span class="pill p-acc">Recommended</span></div>
+    <div class="small">1.1 km from your original hotel · rated 4.1 · Deluxe AC room · already confirmed by the hotel</div>
+    <div class="row" style="margin-top:6px"><span class="small">Price difference ₹180</span><b>We pay it</b></div>
+  </button>
+  <button class="opt" data-go="g3">
+    <b>See 3 more options nearby</b>
+    <div class="small">Same price band, all confirmed for tonight</div>
+  </button>
+  <button class="opt" data-go="g4r" data-time="2:43 PM">
+    <b>Cancel and get a full refund</b>
+    <div class="small">₹1,240 back to your UPI account, started now</div>
+  </button>
+  <p class="small">Why this happened: the hotel told us at 2:40 PM that it could not honour this booking. We asked every hotel to confirm hours before arrival so that this reaches you now, not at the desk.</p>
+</section>
+
+<section data-s="g4" data-name="4. New room confirmed" data-group="Guest" hidden>
+  <div class="top"><span class="brand">Your trip</span></div>
+  <span class="pill p-ok">✓ Confirmed by Neel Bagh Residency</span>
+  <h2 style="margin-top:12px">You're booked at Neel Bagh Residency</h2>
+  <div class="card">
+    <div class="row"><span>Deluxe AC room · tonight</span><b>₹1,240 paid</b></div>
+    <div class="small">We paid the ₹180 difference. Nothing more to pay at the desk.</div>
+  </div>
+  <div class="card"><div class="small">Show at the desk</div><div class="code">7 3 0 6</div></div>
+  <button class="btn b2" data-go="g1" data-time="2:10 PM">Start the demo again</button>
+</section>
+
+<section data-s="g4r" data-name="4b. Refund chosen" data-group="Guest" hidden>
+  <div class="top"><span class="brand">Refund</span></div>
+  <span class="pill p-ok">✓ Refund started</span>
+  <h2 style="margin-top:12px">₹1,240 is on its way to your UPI account</h2>
+  <ul class="steps">
+    <li><span class="dot d-ok">✓</span><span>Refund started · 2:43 PM</span></li>
+    <li><span class="dot d-now">2</span><span>With your bank · usually arrives within 1 to 3 working days</span></li>
+    <li><span class="dot d-no">3</span><span>Received</span></li>
+  </ul>
+  <p class="small">It goes back to how you paid, not to app wallet money.</p>
+  <button class="btn b2" data-go="g1" data-time="2:10 PM">Start the demo again</button>
+</section>
+
+<section data-s="g5" data-name="5. Refused at the desk: report" data-group="Guest" hidden>
+  <div class="top"><button class="back" data-go="g1">‹</button><span class="t">Refused at the desk</span></div>
+  <h2>We'll sort this out with you, now</h2>
+  <div class="card">
+    <div class="row"><b>Your location</b><span class="pill p-ok">✓ At the hotel</span></div>
+    <div class="small">You're 40 m from Saffron Courtyard. This lets us act straight away without asking you for proof.</div>
+  </div>
+  <div class="card">
+    <b>What did the desk say?</b>
+    <div class="chips" id="reasons">
+      <button class="chip">No room</button><button class="chip">No booking found</button><button class="chip">Pay more</button>
+      <button class="chip">ID or couple rule</button><button class="chip">Hotel closed</button><button class="chip">Something else</button>
+    </div>
+    <div class="small">Optional. It helps us talk to the hotel.</div>
+  </div>
+  <button class="btn b1" data-go="g6" data-time="9:42 PM">Get help now</button>
+  <p class="small">Don't pay anything extra at the desk. If you already did, tell us and we'll take it up with the hotel.</p>
+</section>
+
+<section data-s="g6" data-name="6. Desk rescue: 15-minute clock" data-group="Guest" hidden>
+  <div class="top"><button class="back" data-go="g5">‹</button><span class="t">Help is on the way</span></div>
+  <div class="small" style="text-align:center">You'll have a confirmed bed, or our next step, within</div>
+  <div class="timer">14:32</div>
+  <ul class="steps">
+    <li><span class="dot d-ok">✓</span><span>Report received · 9:42 PM</span></li>
+    <li><span class="dot d-now">2</span><span>Calling the hotel's manager now</span></li>
+    <li><span class="dot d-no">3</span><span>Holding a room nearby as backup (searching within 3 km)</span></li>
+  </ul>
+  <button class="sim" data-go="g6ok" data-time="9:47 PM">the hotel agrees to give the room</button>
+  <button class="sim" data-go="g7" data-time="9:55 PM">the hotel still refuses; a room is free nearby</button>
+  <button class="sim" data-go="g8" data-time="9:57 PM">the hotel refuses and nothing comparable is free nearby</button>
+  <button class="btn b2" data-go="g6">Talk to a person</button>
+</section>
+
+<section data-s="g6ok" data-name="6b. Hotel lets the guest in" data-group="Guest" hidden>
+  <div class="top"><span class="brand">Saffron Courtyard</span></div>
+  <span class="pill p-ok">✓ Sorted at 9:47 PM</span>
+  <h2 style="margin-top:12px">The hotel has confirmed your room at the price you paid</h2>
+  <div class="card"><div class="small">Show this to the desk</div><div class="code">4 8 2 1</div><div class="small" style="text-align:center">Nothing more to pay. If anyone asks, tap below.</div></div>
+  <button class="btn b2" data-go="g6ok">The desk still asks me to pay</button>
+  <button class="btn b2" data-go="g1" data-time="2:10 PM">Start the demo again</button>
+</section>
+
+<section data-s="g7" data-name="7. Rebooked nearby" data-group="Guest" hidden>
+  <div class="top"><span class="brand">New room</span></div>
+  <span class="pill p-ok">✓ Room held for you until 10:40 PM</span>
+  <h2 style="margin-top:12px">Kamal Vilas, 1.4 km away</h2>
+  <div class="card">
+    <div class="row"><span>Deluxe AC room · tonight</span><b>₹1,240 paid</b></div>
+    <div class="small">Confirmed by Kamal Vilas at 9:55 PM. We pay the ₹240 difference.</div>
+  </div>
+  <div class="card">
+    <div class="row"><b>Your cab is on us</b><span class="pill p-acc">up to ₹250</span></div>
+    <div class="small">Book any cab to Kamal Vilas and upload the receipt, or use the code below at the hotel's partner taxi stand.</div>
+  </div>
+  <div class="card"><div class="small">Show at the desk</div><div class="code">5 1 9 3</div></div>
+  <button class="btn b2" data-go="g1" data-time="2:10 PM">Start the demo again</button>
+</section>
+
+<section data-s="g8" data-name="8. Hard case: no room free nearby" data-group="Guest" hidden>
+  <div class="top"><span class="brand">We're still on it</span></div>
+  <span class="pill p-bad">No comparable room within 3 km is free right now</span>
+  <h2 style="margin-top:12px">We haven't found you a bed yet. Here's what we've already done, and your choices</h2>
+  <ul class="steps">
+    <li><span class="dot d-ok">✓</span><span><b>Full refund of ₹1,240 started</b> to your UPI account. You won't lose this money whatever you choose next.</span></li>
+    <li><span class="dot d-ok">✓</span><span>We'll keep searching and update you every 10 minutes.</span></li>
+  </ul>
+  <button class="opt" data-go="g7" data-time="10:06 PM"><b>Take a room 6.2 km away</b><div class="small">Hotel Aravali Inn · confirmed · we pay the difference and your cab both ways</div></button>
+  <button class="opt" data-go="g8"><b>Book a place yourself</b><div class="small">We'll repay up to ₹600 above what you paid. Upload the bill within 7 days.</div></button>
+  <button class="opt" data-go="g8"><b>Wait while we keep searching</b><div class="small">Next update by 10:07 PM</div></button>
+  <button class="btn b1" data-go="g8">Call me now</button>
+  <p class="small">Saffron Courtyard confirmed your room this afternoon and then refused it. That breaks our partner terms, and the hotel, not you, pays for this.</p>
+</section>
+
+<!-- ============ OWNER ============ -->
+<section data-s="o1" data-name="O1. Owner: confirm tonight's arrivals" data-group="Owner app" class="owner" hidden>
+  <div class="top"><span class="brand">Partner app · Saffron Courtyard</span></div>
+  <h2>Confirm tonight's arrivals</h2>
+  <div class="small">Please answer by 6:00 PM. Unanswered bookings will be moved to another hotel.</div>
+  <div class="note"><b>Saying no now costs you nothing.</b> If you confirm and then refuse the guest at the desk, the guest's relocation is charged to you, with the evidence shown in this app.</div>
+  <div class="card">
+    <div class="row"><b>RR-48217 · 2 guests</b><span class="small">₹1,240 · prepaid</span></div>
+    <div class="small">Deluxe AC · arriving around 9:30 PM</div>
+    <div class="row" style="margin-top:8px;gap:8px"><button class="btn b1" style="margin:0" data-go="o1c">Confirm room</button><button class="btn b2" style="margin:0" data-go="o2">Can't honour</button></div>
+  </div>
+  <div class="card">
+    <div class="row"><b>RR-48233 · 1 guest</b><span class="small">₹860 · pay at hotel</span></div>
+    <div class="small">Standard · arriving around 7:00 PM</div>
+    <div class="row" style="margin-top:8px;gap:8px"><button class="btn b1" style="margin:0" data-go="o1c">Confirm room</button><button class="btn b2" style="margin:0" data-go="o2">Can't honour</button></div>
+  </div>
+  <div class="card"><div class="row"><span class="small">This month: 96% of bookings confirmed</span><span class="pill p-ok">Reliable</span></div></div>
+  <button class="opt" data-go="o4"><div class="row"><b>Records</b><span class="pill p-bad">1 desk refusal</span></div><div class="small">See the evidence and appeal within 48 hours</div></button>
+</section>
+
+<section data-s="o1c" data-name="O1b. Owner confirmed" data-group="Owner app" class="owner" hidden>
+  <div class="top"><button class="back" data-go="o1">‹</button><span class="brand">Partner app</span></div>
+  <span class="pill p-ok">✓ Confirmed</span>
+  <h2 style="margin-top:12px">Room confirmed for RR-48217</h2>
+  <p class="small">The guest has been told their room is ready at ₹1,240, with nothing more to pay at the desk. Please keep a Deluxe AC room free for them.</p>
+  <button class="btn b2" data-go="o1">Back to arrivals</button>
+</section>
+
+<section data-s="o2" data-name="O2. Owner: can't honour" data-group="Owner app" class="owner" hidden>
+  <div class="top"><button class="back" data-go="o1">‹</button><span class="t">Can't honour RR-48217</span></div>
+  <h2>Why can't you honour it?</h2>
+  <div class="chips" id="oreasons">
+    <button class="chip">Rooms sold out</button><button class="chip">Room out of service</button><button class="chip">Price too low</button>
+    <button class="chip">Not taking OYO guests now</button><button class="chip">Property closed</button>
+  </div>
+  <div class="note">No charge for answering now. We'll move the guest before they travel.</div>
+  <div class="warnbox">If you decline more than 1 in 20 bookings in a month, your listing is shown lower and an account manager will call you. "Property closed" pauses your listing until you reopen it.</div>
+  <button class="btn b1" data-go="o3">Send answer</button>
+</section>
+
+<section data-s="o3" data-name="O3. Owner: answer sent" data-group="Owner app" class="owner" hidden>
+  <div class="top"><span class="brand">Partner app</span></div>
+  <span class="pill p-acc">Answer sent · no charge</span>
+  <h2 style="margin-top:12px">We're moving this guest to another hotel</h2>
+  <p class="small">Thank you for telling us early. The guest has been offered a confirmed room nearby. This booking won't count as a desk refusal.</p>
+  <button class="btn b2" data-go="o1">Back to arrivals</button>
+</section>
+
+<section data-s="o4" data-name="O4. Owner: desk refusal record and appeal" data-group="Owner app" class="owner" hidden>
+  <div class="top"><span class="brand">Partner app · Records</span></div>
+  <span class="pill p-bad">Desk refusal · RR-48217</span>
+  <h2 style="margin-top:12px">Relocation charge: ₹490</h2>
+  <div class="card">
+    <b>What happened</b>
+    <ul class="steps">
+      <li><span class="dot d-ok">1</span><span>2:14 PM · you confirmed the room in this app</span></li>
+      <li><span class="dot d-ok">2</span><span>9:41 PM · guest at your property (phone location, 40 m)</span></li>
+      <li><span class="dot d-ok">3</span><span>9:42 to 9:50 PM · we called your desk twice; manager said "no room"</span></li>
+      <li><span class="dot d-ok">4</span><span>9:55 PM · guest rebooked at Kamal Vilas</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="row"><span>Room price difference</span><b>₹240</b></div>
+    <div class="row"><span>Guest's cab</span><b>₹250</b></div>
+    <div class="row small"><span>Deducted from your next payout, shown as its own line</span><span>₹490</span></div>
+  </div>
+  <button class="btn b2" data-go="o5">Appeal within 48 hours</button>
+</section>
+
+<section data-s="o5" data-name="O5. Owner: appeal" data-group="Owner app" class="owner" hidden>
+  <div class="top"><button class="back" data-go="o4">‹</button><span class="t">Appeal</span></div>
+  <h2>Tell us what happened</h2>
+  <div class="chips" id="appeal">
+    <button class="chip">Guest had no valid ID</button><button class="chip">Guest broke a house rule shown on the listing</button><button class="chip">Guest arrived after the hold time</button><button class="chip">Other</button>
+  </div>
+  <div class="card small">Add a photo or note (for example, the ID shown at the desk). A person reviews every appeal within 3 working days and the charge is paused until then.</div>
+  <button class="btn b1" data-go="o4">Submit appeal</button>
+</section>
+
+    </div>
+    <div class="foot">Prototype · invented names and prices · not affiliated with OYO</div>
+  </div></div>
+</div>
+
+<script>
+(function(){
+  var app=document.getElementById('app'), jump=document.getElementById('jump'), clock=document.getElementById('clock');
+  var secs=[].slice.call(app.querySelectorAll('section[data-s]'));
+  var groups={};
+  secs.forEach(function(s){ (groups[s.dataset.group]=groups[s.dataset.group]||[]).push(s); });
+  Object.keys(groups).forEach(function(g){
+    var b=document.createElement('b'); b.textContent=g; jump.appendChild(b);
+    groups[g].forEach(function(s){
+      var x=document.createElement('button'); x.textContent=s.dataset.name; x.dataset.target=s.dataset.s;
+      x.addEventListener('click',function(){ show(s.dataset.s); });
+      jump.appendChild(x);
+    });
+  });
+  var T={g1:'2:10 PM',g2:'2:14 PM',g3:'2:40 PM',g4:'2:43 PM',g4r:'2:43 PM',g5:'9:41 PM',g6:'9:42 PM',g6ok:'9:47 PM',g7:'9:55 PM',g8:'9:57 PM',
+          o1:'2:30 PM',o1c:'2:31 PM',o2:'2:39 PM',o3:'2:40 PM',o4:'10:15 AM',o5:'10:16 AM'};
+  function show(id,time){
+    time = time || T[id];
+    secs.forEach(function(s){ s.hidden = s.dataset.s!==id; });
+    [].forEach.call(jump.querySelectorAll('button'),function(b){ b.classList.toggle('on', b.dataset.target===id); });
+    if(time) clock.textContent=time;
+    app.scrollTop=0;
+    try{ history.replaceState(null,'','#'+id); }catch(e){}
+  }
+  app.addEventListener('click',function(e){
+    var t=e.target.closest('[data-go]');
+    if(t){ show(t.dataset.go, t.dataset.time); return; }
+    var c=e.target.closest('.chip');
+    if(c){ [].forEach.call(c.parentNode.querySelectorAll('.chip'),function(x){x.classList.remove('on')}); c.classList.add('on'); }
+  });
+  if(/[?&]frame\b/.test(location.search)) document.body.classList.add('frameonly');
+  var start=(location.hash||'').slice(1);
+  show(secs.some(function(s){return s.dataset.s===start}) ? start : 'g1');
+})();
+</script>
+</body>
+</html>

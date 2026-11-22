@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solutions: from nine ideas to one MVP</title>
+<style>
+:root{--ink:#1d1b26;--muted:#5d5a6b;--line:#e4e1ea;--bg:#f7f6f2;--card:#ffffff;--accent:#4338ca;--warm:#b45309;--code:#efedf5}
+@media (prefers-color-scheme: dark){:root{--ink:#ecebf2;--muted:#aaa7b8;--line:#2e2c3a;--bg:#14131b;--card:#1c1b25;--accent:#a5b4fc;--warm:#f5b25b;--code:#24232f}}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:22px 16px 72px}
+a{color:var(--accent)} h1{font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 18px}
+h2{font-size:22px;margin-top:38px;padding-top:14px;border-top:1px solid var(--line)} h3{font-size:18px;margin-top:26px}
+.tablewrap{overflow-x:auto;margin:12px 0} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600}
+blockquote{margin:14px 0;padding:8px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 8px 8px 0}
+code{background:var(--code);border-radius:4px;padding:0 4px;font-size:90%} pre{background:var(--code);padding:12px;overflow-x:auto;border-radius:8px}
+.back{font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+</style></head>
+<body><main>
+<p class="back"><a href="../case-study/index.html">← Back to the case study</a><span>Independent student case study · not affiliated with OYO</span></p>
+<h1>Solutions: from nine ideas to one MVP</h1>
+<p>The problem (<code>problem.md</code>): the owner's "no" usually exists before the guest travels, but nobody asks for it, so it surfaces at the desk; and when it does, OYO rarely rehouses the guest (5% in the reviews). The ideas below are organised by where in the journey they act.</p>
+<h2>1. The ideas</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Idea</th>
+<th>Journey step</th>
+<th>Cause it targets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Pre-arrival confirmation ("RoomReady handshake").</strong> Hours before check-in, the owner confirms each booking at its price with one tap in the owner app. If the owner declines or does not answer, OYO moves the guest to a confirmed room nearby, or refunds to source, before the guest travels.</td>
+<td>3–4</td>
+<td>Gone, won't take OYO, price dispute, full (whenever known in advance)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Desk Rescue with a clock.</strong> A "Refused at the desk" button that checks the guest's location, calls the hotel, and within 15 minutes either confirms the room or books a nearby one, with the cab paid and the refund to source started.</td>
+<td>5</td>
+<td>Every cause that still reaches the desk</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Fair-penalty ledger.</strong> Declining early is free (up to a limit). Refusing at the desk after confirming makes the owner pay the guest's relocation, shown line by line with the evidence (confirmation time, guest location, call log) and a 48-hour appeal.</td>
+<td>4–6</td>
+<td>The owner's reason to say no late instead of early</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Stale-listing sweep.</strong> Pause listings automatically when signals show the property has gone: missed confirmations, no check-ins, guest "closed" reports, failed calls.</td>
+<td>1</td>
+<td>Gone (26% of stated reasons)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Owner price floor.</strong> Owners set a minimum nightly price; any OYO discount below it is funded by OYO, not the owner.</td>
+<td>2</td>
+<td>Price dispute (23%)</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>"Sold at the desk" inventory button.</strong> Owners mark a room sold to a walk-in in real time, so OYO stops selling it.</td>
+<td>3</td>
+<td>No room (22%)</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>House rules before payment.</strong> Couple and local-ID rules shown on the payment screen, with a tick to acknowledge.</td>
+<td>2</td>
+<td>ID, couple, house rule (3%)</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Generous compensation.</strong> Every denied guest gets double their money back or a large credit.</td>
+<td>6</td>
+<td>None directly; pays for the failure</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Zero tolerance.</strong> Delist any property after one confirmed denial.</td>
+<td>6</td>
+<td>All, through deterrence</td>
+</tr>
+</tbody>
+</table></div>
+<h2>2. Scoring</h2>
+<p>RICE = Reach × Impact × Confidence ÷ Effort. <strong>Reach</strong> is the share of denials the idea can affect (from the reason split in <code>research/review_analysis.md</code>). <strong>Impact</strong>: 3 = prevents the denial, 2 = gives the guest a bed or changes owner behaviour, 1 = softens the outcome. <strong>Confidence</strong> is how sure I am the idea works as described. <strong>Effort</strong> is rough person-months for a first version.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Idea</th>
+<th style="text-align: right;">Reach</th>
+<th style="text-align: right;">Impact</th>
+<th style="text-align: right;">Confidence</th>
+<th style="text-align: right;">Effort</th>
+<th style="text-align: right;">RICE</th>
+<th>Reasoning behind the scores</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>9</td>
+<td>Zero tolerance</td>
+<td style="text-align: right;">100%</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30%</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">60</td>
+<td>Cheap to switch on and touches every denial, but the partner terms already forbid denial and allow suspension, and reviews show it does not stop it; deterrence mostly pushes the "no" further out of sight.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Generous compensation</td>
+<td style="text-align: right;">100%</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50%</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">50</td>
+<td>Easy to ship; does not put anyone in a bed at 11 PM; invites false claims.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Desk Rescue</td>
+<td style="text-align: right;">100%</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">70%</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">47</td>
+<td>Every desk denial can use it; Booking.com shows a same-day clock is workable at scale; needs supply search, a call bridge, a cab credit.</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Stale-listing sweep</td>
+<td style="text-align: right;">26%</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">80%</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">42</td>
+<td>Narrow but certain: a closed hotel should not be bookable. Mostly rules on signals OYO already has.</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Fair-penalty ledger</td>
+<td style="text-align: right;">60%</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">50%</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td>Can only apply where the owner had a chance to say no, so reach equals the handshake's; confidence is moderate because owners distrust deductions.</td>
+</tr>
+<tr>
+<td>1</td>
+<td>RoomReady handshake</td>
+<td style="text-align: right;">60%</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">60%</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">27</td>
+<td>Reach capped below the 73% of pre-decided causes because some owners will confirm and still refuse; needs owner-app, notification and rebooking work.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rules before payment</td>
+<td style="text-align: right;">3%</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">80%</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">5</td>
+<td>Cheap but tiny reach in this data.</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Owner price floor</td>
+<td style="text-align: right;">23%</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">40%</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">5</td>
+<td>Attacks a root cause, but changes how OYO prices and funds discounts; low confidence without pricing data.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>"Sold at desk" button</td>
+<td style="text-align: right;">22%</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: right;">40%</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td>Owners would have to choose to use it at the moment they are selling to a walk-in; partly covered by idea 1.</td>
+</tr>
+</tbody>
+</table></div>
+<h2>3. Where I overrode the scores, and why</h2>
+<p>RICE does not see cost, dependencies or guardrails. Four overrides:</p>
+<ol>
+<li><strong>Ideas 9 and 8 score highest, and both are rejected.</strong> They fail the guardrails, not the arithmetic. Zero tolerance fails the owner-side guardrail (see the second objection below). Generous compensation fails the cost guardrail: in the costing, a ₹300 goodwill credit to every moved or rescued guest is a large part of why the first design loses ₹6.9 crore a year (<code>impact_model.xlsx</code>, sheet "Design v1 vs v2").</li>
+<li><strong>The handshake (1) goes in although it scores below Desk Rescue (2).</strong> It is a dependency for idea 3, and the cost model shows that rescue alone is the expensive way to fix this: each desk rescue costs about ₹400 at night, while an early move costs about ₹120 in daylight. The handshake is what makes the rescue affordable.</li>
+<li><strong>The fair-penalty ledger (3) goes in as a thin version.</strong> Without it, the handshake gives owners a free "no" and nothing else, and the costing shows that extra owner declines are the single biggest risk to the economics. The ledger is what makes an early, honest "no" the best option for an owner who cannot honour a booking.</li>
+<li><strong>The stale-listing sweep (4) goes in, folded into the handshake.</strong> A missed confirmation is the strongest signal that a property has gone, so the sweep is mostly a rule on handshake data.</li>
+</ol>
+<h2>4. The MVP: RoomReady</h2>
+<p><strong>Ideas 1 + 2 + 3 (thin) + 4, for prepaid bookings first.</strong></p>
+<ul>
+<li><strong>Ask before the guest travels.</strong> The owner confirms each prepaid booking by 6 hours before check-in (within 30 minutes for same-day bookings). A reminder goes out 2 hours before the deadline, then an automated call.</li>
+<li><strong>Act on the answer.</strong> "Can't honour" or no answer means the guest is offered, before travelling, a confirmed room within 3 km at the same or a better rating, with OYO paying any difference up to ₹400, or a refund to source started immediately.</li>
+<li><strong>Rescue with a clock.</strong> At the desk, a location-checked report starts a 15-minute clock: call the hotel; if it still refuses, book a nearby room (difference paid, cab up to ₹250); if nothing comparable is free, start the refund at once and offer the next-best options (a farther room with cab both ways, or reimbursement up to ₹600 above the original price).</li>
+<li><strong>Make honesty the owner's best option.</strong> Declining early is free up to 1 in 20 bookings a month; above that, the listing ranks lower and an account manager calls. Refusing at the desk after confirming costs the owner the actual relocation (as the partner terms already say), shown with evidence and open to appeal.</li>
+<li><strong>Close dead listings.</strong> Three missed confirmations in a row, or a "closed" desk report confirmed by a call, pause the listing.</li>
+</ul>
+<p>Why prepaid first: OYO already holds the money (so a move or refund needs nothing from the guest), and OYO's own terms already promise these guests "alternate accommodation of comparable standards".</p>
+<h2>5. How costing changed the design</h2>
+<p>The first version (v1) was generous: no limit on free declines, OYO paying any price difference without a cap, a ₹300 goodwill credit to every moved or rescued guest, and OYO absorbing rescue costs so as not to upset owners. Costed in the base case, <strong>v1 loses ₹6.9 crore a year</strong>, with the benefit unchanged. Most of the extra cost comes from owners declining bookings they would otherwise have honoured (a free "no" is used), then the goodwill credits.</p>
+<p>v2, the MVP above, changes four things: a cap on top-ups, credit only by agent judgement, owner recovery when the owner had confirmed, and a decline limit tied to ranking. <strong>v2 is roughly break-even in the base case (+₹0.1 crore a year), loses ₹5.4 crore in the pessimistic case and gains ₹8.4 crore in the optimistic case.</strong> It is a trust and promise-keeping project that roughly pays for itself, not a profit project, and the case where it loses money is driven mainly by extra owner declines. That is why the pilot measures the decline rate before anything else (<code>metrics.md</code>).</p>
+<h2>6. Rejected ideas, one line each</h2>
+<ul>
+<li><strong>5. Owner price floor:</strong> the strongest long-term fix for price disputes, but it changes OYO's pricing model and needs data this study does not have; it is the first item for "what next".</li>
+<li><strong>6. "Sold at desk" button:</strong> relies on the owner volunteering information at the moment it is selling the room to someone else; the handshake asks at a better moment.</li>
+<li><strong>7. Rules before payment:</strong> worth doing as a small fix outside this project, but 3% of stated causes cannot justify the project's focus.</li>
+<li><strong>8. Generous compensation:</strong> pays for the failure instead of fixing it, costs more than the benefit, and invites false claims.</li>
+<li><strong>9. Zero tolerance:</strong> already in the contract, does not work in practice, and pushes supply away.</li>
+</ul>
+<h2>7. Two objections, answered properly</h2>
+<p><strong>"Why not just compensate every guest generously?"</strong>
+Because money after the fact does not solve the moment that matters. A guest at the counter at 11 PM needs a bed, not a credit next week. Compensation is also the most expensive way to respond: in the base case, a ₹300 credit to every affected guest plus uncapped top-ups helps turn a break-even project into a ₹6.9 crore loss. And it invites gaming: any guest could claim a denial. RoomReady spends the money on the rescue itself (the room difference and the cab), verifies the claim by the guest's location and a call to the hotel, and keeps discretionary credit for agents to use when the rescue fails.</p>
+<p><strong>"Why not simply penalise or delist every owner who denies a check-in?"</strong>
+Because OYO already does, on paper. The partner terms say the owner "shall not deny check-in to any OYO customer under any circumstances", make the owner bear relocation costs, allow penalties offset against payouts, and list denial as a reason to suspend the listing. The reviews show this has not prevented denials. Most denials come from owners who disagree with the booking (the price, the channel, or the relationship itself), and a penalty they cannot see coming, deducted from a payout they already find opaque, gives them a reason to leave rather than comply. Owners leaving shows up later as more "property gone" denials, the largest single cause. Penalties work only when the owner had a fair chance to say no; the handshake gives that chance, and the ledger keeps the penalty for owners who said yes and then broke their word.</p>
+</main></body></html>

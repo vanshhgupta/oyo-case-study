@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRD: RoomReady, pre-arrival confirmation and desk rescue</title>
+<style>
+:root{--ink:#1d1b26;--muted:#5d5a6b;--line:#e4e1ea;--bg:#f7f6f2;--card:#ffffff;--accent:#4338ca;--warm:#b45309;--code:#efedf5}
+@media (prefers-color-scheme: dark){:root{--ink:#ecebf2;--muted:#aaa7b8;--line:#2e2c3a;--bg:#14131b;--card:#1c1b25;--accent:#a5b4fc;--warm:#f5b25b;--code:#24232f}}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:22px 16px 72px}
+a{color:var(--accent)} h1{font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 18px}
+h2{font-size:22px;margin-top:38px;padding-top:14px;border-top:1px solid var(--line)} h3{font-size:18px;margin-top:26px}
+.tablewrap{overflow-x:auto;margin:12px 0} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600}
+blockquote{margin:14px 0;padding:8px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 8px 8px 0}
+code{background:var(--code);border-radius:4px;padding:0 4px;font-size:90%} pre{background:var(--code);padding:12px;overflow-x:auto;border-radius:8px}
+.back{font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+</style></head>
+<body><main>
+<p class="back"><a href="../case-study/index.html">← Back to the case study</a><span>Independent student case study · not affiliated with OYO</span></p>
+<h1>PRD: RoomReady, pre-arrival confirmation and desk rescue</h1>
+<p><em>Independent student case study, not affiliated with OYO. A working PRD written as if for OYO's India guest and partner product teams.</em></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owner</td>
+<td>Product manager, guest trust (case study author)</td>
+</tr>
+<tr>
+<td>Teams</td>
+<td>Guest app, partner app (Co-PRISM, formerly Co-OYO), supply operations, customer support, payments</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Draft for a pilot in three to four cities</td>
+</tr>
+<tr>
+<td>Related</td>
+<td><code>strategy/problem.md</code>, <code>strategy/solutions.md</code>, <code>strategy/metrics.md</code>, <code>strategy/impact_model.xlsx</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2>1. Background</h2>
+<p>Being refused a confirmed room is the largest arrival-stage complaint in recent OYO guest app reviews: 600 of 1,632 coded problems (37%). Only about 10% of those guests describe ending up in a bed through OYO or the hotel, and 56% also complain about how the problem was handled.</p>
+<p>OYO's own terms already promise the guest "alternate accommodation of comparable standards" and already forbid the owner to deny check-in "under any circumstances". Neither works at the moment that matters, because the owner never agrees to a specific booking at a specific price: OYO sets the price within a range and manages the inventory, and the owner app has no step to accept a booking. In 73% of denials where the guest reports a reason, the owner's "no" (property gone, not taking OYO bookings, price refused) existed before the guest set out. It surfaces at the desk because nobody asked earlier.</p>
+<h2>2. Goals and non-goals</h2>
+<p><strong>Goals</strong>
+1. Move the owner's "no" from the desk to hours before arrival, so that the guest is moved before travelling.
+2. When a guest is refused at the desk anyway, give them a confirmed bed, or a clear next step with their money already on its way back, within 15 minutes.
+3. Make an honest early "no" the owner's best option, and keep penalties for owners who confirmed and then refused, with evidence and an appeal.
+4. Do it at roughly break-even cost (see <code>impact_model.xlsx</code>).</p>
+<p><strong>Non-goals</strong>
+- Changing how OYO prices rooms or its revenue share (a later bet, see "Open questions").
+- Room quality or listing accuracy after check-in.
+- Couple and local-ID policy itself.
+- Bookings made on other travel sites (pilot phase).
+- Pay-at-hotel bookings (pilot phase; next after prepaid).</p>
+<h2>3. Users</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>User</th>
+<th>Situation</th>
+<th>What they need</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Prepaid guest arriving the same evening</strong> (primary)</td>
+<td>Booked and paid in the app; often travelling for an exam, a hospital visit or work; may arrive late</td>
+<td>To know before leaving that the room is really there, and if not, a confirmed alternative or their money back</td>
+</tr>
+<tr>
+<td><strong>Guest refused at the desk</strong></td>
+<td>Standing at the counter, sometimes at night, with luggage or family</td>
+<td>A bed within minutes, no argument with the desk, no extra payment</td>
+</tr>
+<tr>
+<td><strong>Hotel owner or manager</strong> (partner)</td>
+<td>Runs a small hotel; sells walk-ins; disputes some OYO prices; uses a phone, not a desktop</td>
+<td>A simple way to say yes or no in time, no surprise deductions, and a fair hearing</td>
+</tr>
+<tr>
+<td><strong>Support agent</strong></td>
+<td>Handles the escalation</td>
+<td>A clock, a budget, a list of nearby confirmed rooms, and authority to act</td>
+</tr>
+</tbody>
+</table></div>
+<h2>4. User stories</h2>
+<ol>
+<li>As a prepaid guest, I want to see that the hotel has confirmed my room at my price before I leave, so that I don't travel to a room that isn't there.</li>
+<li>As a prepaid guest whose hotel can't honour my booking, I want a confirmed room nearby or a full refund to my original payment method, offered before I travel.</li>
+<li>As a guest refused at the desk, I want to tap one button and have OYO deal with the hotel, so that I don't have to argue or pay more.</li>
+<li>As a guest refused at the desk with no room free nearby, I want to know straight away that my money is safe and what my options are.</li>
+<li>As an owner, I want to confirm or decline tonight's bookings in one screen, so that I can say no honestly without being fined.</li>
+<li>As an owner charged for a desk refusal, I want to see exactly why and what it cost, and to appeal if the guest was at fault.</li>
+<li>As a support agent, I want a pre-approved budget and a list of nearby confirmed rooms, so that I can rebook without asking a manager.</li>
+</ol>
+<h2>5. MVP features and acceptance criteria</h2>
+<p><strong>F1. Owner confirmation (handshake)</strong>
+- Every prepaid booking appears in the partner app's "Confirm arrivals" list with booking value, room type, guest count and expected arrival.
+- The deadline is 6 hours before check-in time; for bookings made less than 8 hours ahead, 30 minutes after booking.
+- Reminder notification 2 hours before the deadline; automated phone call (keypad 1 = confirm, 2 = can't honour) 30 minutes before.
+- "Can't honour" asks for one reason: sold out, room out of service, price too low, not taking OYO bookings, property closed.
+- <em>Accepted when:</em> 95% of pilot bookings get an answer or reach the deadline with the status recorded; an answer is stored with a timestamp and shown to the guest within 1 minute.</p>
+<p><strong>F2. Guest confirmation status and early move</strong>
+- The trip screen shows "Waiting", "Room confirmed by the hotel at [time]" or "The hotel can't hold your room".
+- On "can't honour" or no answer by the deadline, the guest is offered within 10 minutes: up to four rooms within 3 km, already confirmed by those hotels, at the same or a better rating; OYO pays any price difference up to ₹400; or a full refund to the original payment method, started immediately.
+- <em>Accepted when:</em> 90% of early moves are offered within 10 minutes of the trigger; a refund chosen here is initiated within 1 minute and never credited to the OYO wallet unless the guest chooses that.</p>
+<p><strong>F3. Desk Rescue</strong>
+- "I'm at the hotel and was refused" button on the trip screen from 2 hours before check-in until noon the next day.
+- Location check: the guest's phone within 200 m of the property; if location is off, the guest can still report and an agent verifies by call.
+- Starts a visible 15-minute clock; OYO calls the hotel immediately (a call bridge, not the guest).
+- If the hotel agrees: the guest sees a confirmation and a desk code, and "nothing more to pay".
+- If not: book a confirmed room within 3 km (price difference paid by OYO), with a cab credit up to ₹250.
+- If nothing comparable is free: refund to source starts at once, and the guest is offered a farther room with cab both ways, reimbursement of up to ₹600 above the original price against a bill, or continued search with an update every 10 minutes, plus a "call me" option.
+- <em>Accepted when:</em> median time from report to a confirmed bed or a started refund ≤ 15 minutes, p90 ≤ 30 minutes in the pilot.</p>
+<p><strong>F4. Fair-penalty ledger (thin version)</strong>
+- Declining by the deadline is free while the property's declines stay at or below 1 in 20 prepaid bookings in a rolling 30 days; above that, the listing's ranking is lowered and an account manager is notified.
+- A desk refusal after confirming is charged at the actual cost of relocation (room difference + cab), as its own line on the payout statement, with the evidence: confirmation time, the guest's location at report time, call log, rebooking.
+- Appeal within 48 hours with a reason and optional photo; the charge is paused until a person reviews it (within 3 working days).
+- <em>Accepted when:</em> 100% of charges show their evidence; appeals are decided within 3 working days.</p>
+<p><strong>F5. Listing pause</strong>
+- A listing is paused when it misses three confirmations in a row, or when a desk report says "closed" and the call bridge cannot reach the property.
+- The owner can reactivate by confirming the property is operating; supply operations verifies before reactivation after a "closed" report.</p>
+<h2>6. Main flow</h2>
+<ol>
+<li>Guest books and pays. Booking appears in the owner's "Confirm arrivals".</li>
+<li>Owner confirms → guest sees "Room confirmed" → normal stay.</li>
+<li>Owner declines or misses the deadline → guest is offered a confirmed nearby room or a refund, before travelling → owner is not charged (within the decline limit).</li>
+<li>Guest refused at the desk → Desk Rescue: call the hotel → if resolved, stay; if not, rebook nearby or refund plus options → if the owner had confirmed, the relocation is charged to the owner with evidence and an appeal.</li>
+</ol>
+<p>The clickable version is <code>prototype/index.html</code>.</p>
+<h2>7. Edge cases</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owner confirms, then the room genuinely breaks (flood, power)</td>
+<td>Owner can mark "room out of service" up to arrival; treated as a late decline (free once a month), not a desk refusal</td>
+</tr>
+<tr>
+<td>Guest arrives after the hold time on the booking</td>
+<td>Desk Rescue still available; if the hotel shows the guest arrived late with no message, the owner is not charged</td>
+</tr>
+<tr>
+<td>Guest has no valid ID or breaks a house rule shown before booking</td>
+<td>Owner appeals with the reason; if upheld, no charge to the owner and the refund follows the existing guest policy</td>
+</tr>
+<tr>
+<td>Location services off or the phone is dead</td>
+<td>Report by phone from the desk; agent verifies with the hotel</td>
+</tr>
+<tr>
+<td>Multi-room group booking</td>
+<td>Treated per room; the early move keeps the group together or offers a refund for the whole group</td>
+</tr>
+<tr>
+<td>Guest reports a refusal but has already checked in</td>
+<td>Hotel's check-in record and the call shut the case; repeated false reports flag the account</td>
+</tr>
+<tr>
+<td>Hotel cannot be reached at all during the rescue</td>
+<td>Treated as "closed": rebook or refund immediately; listing paused pending verification</td>
+</tr>
+<tr>
+<td>Desk demands extra money but gives the room</td>
+<td>Guest taps "the desk asks me to pay"; same call bridge; if the guest already paid, OYO refunds the extra and charges the owner</td>
+</tr>
+</tbody>
+</table></div>
+<h2>8. Metrics</h2>
+<p>North star: share of prepaid bookings where the guest sleeps in a confirmed room at the price paid with nothing extra at the desk. Leading indicator: confirmation rate by deadline. Guardrails: extra declines, net cost per 1,000 bookings, owner churn, appeal-upheld rate, abuse rate, early-move rate. Full definitions and thresholds: <code>strategy/metrics.md</code>.</p>
+<h2>9. Rollout</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope</th>
+<th>Exit criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0. Dry run (2 weeks)</td>
+<td>Handshake visible to owners in one city, no guest-facing changes, no penalties</td>
+<td>80% of bookings answered by the deadline; owner feedback from 20 calls</td>
+</tr>
+<tr>
+<td>1. Pilot (8 weeks + follow-up)</td>
+<td>Randomised by property, ~570 properties per arm, prepaid only</td>
+<td>Ship rules in <code>metrics.md</code></td>
+</tr>
+<tr>
+<td>2. Prepaid, all cities</td>
+<td>All prepaid bookings on OYO's own channels</td>
+<td>Guardrails hold for 4 weeks</td>
+</tr>
+<tr>
+<td>3. Pay-at-hotel and OTA bookings</td>
+<td>Handshake for pay-at-hotel; Desk Rescue for OTA bookings</td>
+<td>Separate test</td>
+</tr>
+</tbody>
+</table></div>
+<h2>10. Open questions</h2>
+<ol>
+<li>How does today's in-app help flow handle a denied check-in, and what is the internal target for resolving it? (Not visible publicly.)</li>
+<li>What is OYO's current penalty schedule for denials, and how often is it applied? (The partner terms refer to "OYO Policies", which are not public.)</li>
+<li>What share of India bookings are prepaid, and what is the real denial rate per booking? (Not disclosed; the two most important inputs to the model.)</li>
+<li>Will small owners answer a phone-based handshake at 2 PM on a busy day? (Test in the dry run.)</li>
+<li>Should a later version let owners set a minimum price, with OYO funding discounts below it, to remove the price dispute at its source?</li>
+<li>Do OTA partners send bookings through the same confirmation path, or does the handshake need their cooperation?</li>
+</ol>
+</main></body></html>

@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booked, But No Room</title>
+<meta name="description" content="A product case study on guests denied check-in at OYO despite a confirmed booking: what guests and hotel owners say, why the owner says no at the desk, and a pre-arrival confirmation and desk-rescue design costed before it was chosen.">
+<style>
+:root{
+  --ink:#1d1b26; --muted:#5d5a6b; --faint:#85829a; --line:#e4e1ea; --bg:#f7f6f2; --card:#ffffff;
+  --accent:#4338ca; --accent-soft:#eceafe; --warm:#b45309; --warm-soft:#fff3e3; --bad:#b42318;
+  --night:#14131d; --night-2:#1f1d2c; --night-ink:#f1f0f7; --night-muted:#b4b1c6; --lamp:#f5b25b;
+  --sans:"Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{--ink:#ecebf2;--muted:#aaa7b8;--faint:#86839a;--line:#2e2c3a;--bg:#16151d;--card:#1f1e29;
+  --accent:#a5b4fc;--accent-soft:#25234a;--warm:#f5b25b;--warm-soft:#33280f;--bad:#f39b93;--night:#0d0c13;--night-2:#191826}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 var(--sans)}
+a{color:var(--accent)}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px}
+img{max-width:100%;display:block}
+
+/* ---------- first screen: night at the counter ---------- */
+.hero{background:var(--night);color:var(--night-ink);padding:24px 0 26px}
+.hero a{color:var(--lamp)}
+.tag{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--night-muted);font-weight:700}
+.hero h1{font-size:clamp(36px,6vw,56px);line-height:1;letter-spacing:-.02em;margin:12px 0 10px;font-weight:800}
+.hero h1 span{color:var(--lamp)}
+.oneline{font-size:clamp(18px,2.3vw,21px);line-height:1.4;max-width:820px;margin:0 0 16px;color:var(--night-ink)}
+.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:start}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--night-2);border-radius:14px;padding:11px 13px 10px}
+.stat b{display:block;font-size:30px;line-height:1;color:var(--lamp);font-weight:800}
+.stat span{display:block;font-size:13px;line-height:1.38;color:var(--night-muted);margin-top:6px}
+.sol{background:var(--night-2);border-radius:16px;padding:12px 16px;margin-bottom:10px}
+.sol h2{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--night-muted);margin:0 0 6px}
+.sol p{margin:0 0 4px;font-size:15px;line-height:1.45}
+.impact{border:1px solid #3a3850;border-radius:16px;padding:10px 16px}
+.impact b.n{font-size:20px;color:var(--night-ink)}
+.impact p{margin:3px 0 0;font-size:14px;line-height:1.5;color:var(--night-muted)}
+.shot{border-radius:26px;overflow:hidden;max-width:270px;margin:0 auto}
+.shot figcaption{font-size:12.5px;color:var(--night-muted);text-align:center;margin-top:8px}
+.by{margin-top:18px;font-size:14px;color:var(--night-muted);display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between}
+.jump{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.jump a{font-size:13.5px;text-decoration:none;border:1px solid #3a3850;border-radius:20px;padding:4px 11px}
+
+/* ---------- body ---------- */
+section.s{padding:44px 0 6px;border-bottom:1px solid var(--line)}
+.num{font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--warm)}
+section.s h2{font-size:clamp(25px,3.6vw,32px);line-height:1.15;margin:4px 0 14px;letter-spacing:-.01em}
+.lead{font-size:19px;line-height:1.5;color:var(--ink);max-width:800px}
+p{max-width:800px}
+.muted{color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.card h3{margin:0 0 8px;font-size:17px}
+blockquote.q{margin:14px 0;padding:10px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 10px 10px 0;max-width:800px}
+blockquote.q p{margin:0}
+blockquote.q cite{display:block;font-style:normal;font-size:13.5px;color:var(--faint);margin-top:4px}
+.bars{margin:10px 0;max-width:800px}
+.bar{display:grid;grid-template-columns:minmax(120px,48%) 1fr 44px;gap:10px;align-items:center;font-size:14.5px;margin:7px 0}
+.bar .track{background:var(--line);border-radius:6px;height:14px;overflow:hidden}
+.bar .fill{background:var(--accent);height:100%}
+.bar .fill.w{background:var(--warm)}
+.bar em{font-style:normal;font-weight:700;text-align:right}
+.tablewrap{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 9px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+td.r,th.r{text-align:right}
+.neg{color:var(--bad);font-weight:700}
+.shots{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}
+.shots figure{margin:0}
+.shots img{border-radius:22px}
+.shots figcaption{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
+.method{background:var(--accent-soft);border-radius:14px;padding:14px 18px;max-width:800px}
+.method p{margin:0}
+ul.tight li{margin:4px 0}
+footer{padding:30px 0 50px;font-size:14px;color:var(--muted)}
+footer ul{padding-left:18px}
+@media (max-width:820px){
+  .grid{grid-template-columns:1fr}
+  .shot{max-width:250px}
+  .two{grid-template-columns:1fr}
+  .shots{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:520px){
+  body{font-size:16px}
+  .stats{grid-template-columns:1fr}
+  .stat b{font-size:30px}
+  .bar{grid-template-columns:1fr 46px}
+  .bar .track{grid-column:1 / span 2;grid-row:2}
+  .bar em{grid-column:2;grid-row:1}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="tag"><span>Product case study · OYO, India · by Vansh Gupta</span><span>Independent · not affiliated with OYO</span></div>
+    <h1>Booked, <span>but no room.</span></h1>
+    <p class="oneline">A guest arrives with a confirmed, often prepaid OYO booking, and the front desk turns them away. The hotel's "no" usually existed before the guest left home. Nobody asked for it until the guest was standing at the counter.</p>
+
+    <div class="grid">
+      <div>
+        <div class="stats">
+          <div class="stat"><b>37%</b><span>of arrival-stage problems in 1,632 recent app reviews are a denied check-in, the largest single issue</span></div>
+          <div class="stat"><b>73%</b><span>of denials with a stated reason were decided before arrival: hotel gone, not taking OYO bookings, or refusing the price</span></div>
+          <div class="stat"><b>10%</b><span>of denied guests say they ended up in a bed through OYO or the hotel; 56% also complain about the follow-up</span></div>
+        </div>
+        <div class="sol">
+          <h2>The design: RoomReady</h2>
+          <p><b>Ask the hotel before the guest travels.</b> The owner confirms each prepaid booking hours ahead; a "no" moves the guest to a confirmed room nearby, or refunds them, before they set out.</p>
+          <p><b>Rescue with a clock.</b> If the desk still refuses, the guest gets a confirmed bed, or their money moving, within 15 minutes.</p>
+          <p><b>Make an early "no" the owner's best option.</b> Declining early is free within a limit; refusing at the desk after confirming costs the owner the relocation, with evidence.</p>
+        </div>
+        <div class="impact">
+          <b class="n">≈ break-even, ~83,000 more guests a year with a bed</b>
+          <p>Projected under stated assumptions, base case: about +₹0.1 crore a year; −₹5.4 crore if things go badly, +₹8.4 crore if well. The main assumption: 0.4% of bookings end in a denial, and owners decline at most 0.15% more bookings once saying no early is easy.</p>
+        </div>
+      </div>
+      <figure class="shot">
+        <img src="img/g3.png" alt="Prototype screen: the hotel can't hold your room tonight, so the guest is offered a confirmed room nearby or a full refund before travelling" width="400" height="770">
+        <figcaption>Prototype: the guest hears "no" before travelling. <a href="../prototype/index.html">Click through it</a></figcaption>
+      </figure>
+    </div>
+
+    <div class="by"><span>By <b>Vansh Gupta</b></span><span>App reviews collected 19 May 2025 to 20 November 2026</span></div>
+    <nav class="jump"><a href="#moment">The moment</a><a href="#evidence">Evidence</a><a href="#paper">What exists</a><a href="#insight">Insight</a><a href="#design">Design</a><a href="#cost">Cost</a><a href="#measure">Metrics</a><a href="#method">Method &amp; limits</a><a href="#next">Next</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="s" id="moment">
+  <div class="num">01 · THE MOMENT</div>
+  <h2>A booking app sells one promise: the room will be there</h2>
+  <p class="lead">When it isn't, the guest is at a counter, often at night in an unfamiliar city, sometimes with family, an exam the next morning or a hospital appointment, and their money is already with the app.</p>
+  <blockquote class="q" data-src="guest"><p>"A confirmed booking means nothing if guests are denied check-in upon arrival."</p><cite>Guest review, after waiting two to three hours at the desk before being told there was no room</cite></blockquote>
+  <p>This study looks at both sides of that counter: the guest who was turned away and the hotel owner who turned them away, and at OYO, which makes the promise but does not run the front desk. It serves one guest segment first: <b>prepaid guests arriving the same day</b>, because OYO already holds their money and already promises them "alternate accommodation of comparable standards" in its terms.</p>
+</section>
+
+<section class="s" id="evidence">
+  <div class="num">02 · TWO SIDES OF THE COUNTER</div>
+  <h2>Guests describe four reasons. Owners describe one grievance.</h2>
+  <p>A script collected the 12,000 most recent Google Play reviews of OYO's guest app and all 913 reviews of its hotel-owner app, Co-OYO. 2,031 guest reviews and 398 owner reviews passed the filter and were coded against a written codebook (see the <a href="#method">method note</a>).</p>
+
+  <div class="two">
+    <div class="card">
+      <h3>Why the hotel said no (479 denials with a stated reason)</h3>
+      <div class="bars">
+        <div class="bar"><span>Property closed or left OYO</span><div class="track"><div class="fill" style="width:25.7%"></div></div><em>26%</em></div>
+        <div class="bar"><span>No record / "we don't take OYO"</span><div class="track"><div class="fill" style="width:24.4%"></div></div><em>24%</em></div>
+        <div class="bar"><span>Won't honour the app price</span><div class="track"><div class="fill" style="width:23%"></div></div><em>23%</em></div>
+        <div class="bar"><span>Full, sold to someone else</span><div class="track"><div class="fill w" style="width:22.1%"></div></div><em>22%</em></div>
+        <div class="bar"><span>ID, couple or house rule</span><div class="track"><div class="fill w" style="width:3.1%"></div></div><em>3%</em></div>
+      </div>
+      <p class="muted" style="font-size:14.5px">No single cause dominates. But the first three, 73% together, were decided before the guest set out.</p>
+    </div>
+    <div class="card">
+      <h3>What owners complain about (181 business complaints)</h3>
+      <div class="bars">
+        <div class="bar"><span>Payouts late or missing</span><div class="track"><div class="fill" style="width:30.9%"></div></div><em>31%</em></div>
+        <div class="bar"><span>Support unreachable</span><div class="track"><div class="fill w" style="width:29.3%"></div></div><em>29%</em></div>
+        <div class="bar"><span>Deductions and penalties</span><div class="track"><div class="fill" style="width:27.6%"></div></div><em>28%</em></div>
+        <div class="bar"><span>OYO cuts my room price</span><div class="track"><div class="fill" style="width:22.1%"></div></div><em>22%</em></div>
+        <div class="bar"><span>Distrust of OYO bookings</span><div class="track"><div class="fill w" style="width:17.1%"></div></div><em>17%</em></div>
+      </div>
+      <p class="muted" style="font-size:14.5px">68% of owner business complaints are about money: what OYO pays, deducts, or sells the room for.</p>
+    </div>
+  </div>
+
+  <blockquote class="q" data-src="guest"><p>"Sir, a room cannot be provided at such a low price. If you want the room, you will have to pay an extra ₹300."</p><cite>The desk's words, as a guest reports them</cite></blockquote>
+  <blockquote class="q" data-src="owner"><p>"i give room for 2400 at my property, I was given a price of 1400 on oyo"</p><cite>A hotel owner, in a Co-OYO review</cite></blockquote>
+  <blockquote class="q" data-src="guest"><p>"Before 1week called them to confirm the details and the manager/ receptionist whoever....saying that all rooms are full"</p><cite>A guest who asked ahead, and heard the "no" a week early</cite></blockquote>
+
+  <p>A second source points the same way. Consumer commissions have held OYO liable in at least twelve denied-check-in cases, recording the same hotel reasons (contract ended, a payment dispute with OYO, extra money demanded), and rejected its "only a booking platform" defence. On a consumer complaint forum, OYO offered another hotel in 4 of 40 denial complaints. Details are in <a href="../research/review_analysis.html">the review analysis</a> and <a href="../research/sources.html">sources</a>.</p>
+</section>
+
+<section class="s" id="paper">
+  <div class="num">03 · WHAT ALREADY EXISTS</div>
+  <h2>OYO already forbids this, on paper</h2>
+  <p>The first interview question is "OYO already handles this, so what is new?". OYO's own public pages say:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Already in place</th><th>What it says</th><th>Why it doesn't work at the desk</th></tr>
+    <tr><td>A promise to the guest</td><td>"OYO shall ensure that User is provided with an alternate accommodation of comparable standards", otherwise a refund</td><td>No time limit, no stated payer for a pricier room or a cab, no in-app path built for someone at a counter</td></tr>
+    <tr><td>A ban on the owner</td><td>The owner "shall not deny check-in to any OYO customer under any circumstances"</td><td>The owner never agreed to this booking at this price; OYO sets the price within a range and manages the inventory, and the owner app has no accept step</td></tr>
+    <tr><td>A penalty</td><td>Relocation costs "solely borne by the OYO Patron", offset against payouts; suspension possible</td><td>The schedule isn't public, and it arrives as one more deduction, the owners' top grievance</td></tr>
+  </table></div>
+  <p>Booking.com makes the property relocate a same-day guest within 30 minutes and pay for it; Airbnb charges a host 50% of the booking for cancelling within 48 hours. Neither needs to ask the hotel to re-confirm, because there the hotel sets its own price and availability. <a href="../research/feature_audit.html">Full feature audit</a>.</p>
+</section>
+
+<section class="s" id="insight">
+  <div class="num">04 · THE INSIGHT</div>
+  <h2>Check-in denial is a consent problem, not an arrival problem</h2>
+  <p class="lead">OYO makes the promise on the owner's behalf, at a price OYO sets. The owner disagrees with it at the only point the owner controls: the front desk.</p>
+  <p>That is why the existing rules fail. A ban and a fine after the fact do not change the fact that the owner's real decision is never asked for. The facts are rarely in dispute (the guest is visibly at the desk and the hotel says no openly), so better evidence would not help. What matters is <b>when</b> the owner's "no" surfaces, and <b>what it costs the owner</b> to say it early rather than late.</p>
+  <div class="two">
+    <div class="card"><h3>Prevention</h3><p style="margin:0">The guest never travels to a room that isn't there. It can catch the 73% of causes that exist in advance, at about ₹120 per move, in daylight. It matters most for volume and cost.</p></div>
+    <div class="card"><h3>Rescue</h3><p style="margin:0">When a denial still happens, the guest has a bed within minutes. It costs about ₹400 per case at night. It matters most for trust, and today it reaches only about 10% of denied guests.</p></div>
+  </div>
+  <p><a href="../strategy/problem.html">Problem definition</a>, including the journey and where each failure could be caught.</p>
+</section>
+
+<section class="s" id="design">
+  <div class="num">05 · THE DESIGN</div>
+  <h2>RoomReady: ask early, rescue fast, charge fairly</h2>
+  <p>Nine ideas were scored; the MVP combines four of them for prepaid bookings. The two highest-scoring ideas, generous compensation and delisting every owner who denies, were rejected on cost and supply grounds (<a href="../strategy/solutions.html">scoring and overrides</a>).</p>
+  <div class="shots">
+    <figure><img src="img/g3.png" alt="Guest screen: moved before travel" loading="lazy" width="400" height="770"><figcaption><b>Moved before travel.</b> The hotel declined at 2:40 PM; the guest gets confirmed rooms nearby or a refund to source.</figcaption></figure>
+    <figure><img src="img/g6.png" alt="Guest screen: desk rescue with a 15-minute clock" loading="lazy" width="400" height="770"><figcaption><b>Desk Rescue.</b> Location checked, hotel called, 15-minute clock on screen.</figcaption></figure>
+    <figure><img src="img/g8.png" alt="Guest screen: no room free nearby" loading="lazy" width="400" height="770"><figcaption><b>The hard case.</b> No room nearby: refund already started, honest options, no spinner.</figcaption></figure>
+    <figure><img src="img/o1.png" alt="Owner screen: confirm tonight's arrivals" loading="lazy" width="400" height="770"><figcaption><b>Owner side.</b> Confirm or decline by 6 PM; saying no now costs nothing.</figcaption></figure>
+  </div>
+  <p><a href="../prototype/index.html">Open the clickable prototype</a> (guest and owner paths, including the owner's evidence and appeal screen) · <a href="../prd/PRD.html">Read the PRD</a></p>
+</section>
+
+<section class="s" id="cost">
+  <div class="num">06 · COSTED FIRST</div>
+  <h2>The first version lost ₹6.9 crore a year. The cost model changed the design.</h2>
+  <p>The first design was generous: unlimited free declines for owners, no cap on the price difference OYO pays, a ₹300 credit for every moved guest, and OYO absorbing rescue costs. Costed in the base case, the benefit stayed the same and the cost more than doubled, mostly because a free "no" gets used: owners decline bookings they would otherwise have honoured.</p>
+  <div class="tablewrap"><table>
+    <tr><th>₹ crore a year (projected)</th><th class="r">Pessimistic</th><th class="r">Base</th><th class="r">Optimistic</th></tr>
+    <tr><td>Benefit: guests kept, bookings kept, support saved</td><td class="r">0.8</td><td class="r">4.0</td><td class="r">11.4</td></tr>
+    <tr><td>Cost: top-ups, rescues, extra owner declines, running</td><td class="r">6.2</td><td class="r">3.9</td><td class="r">3.0</td></tr>
+    <tr><td><b>Net, RoomReady as designed</b></td><td class="r neg">−5.4</td><td class="r"><b>+0.1</b></td><td class="r"><b>+8.4</b></td></tr>
+    <tr><td>Net, first generous version (base inputs)</td><td class="r"></td><td class="r neg">−6.9</td><td class="r"></td></tr>
+  </table></div>
+  <p><b>On a whiteboard:</b> ~3.5 crore bookings × 0.4% denied = 1.4 lakh denials; catch 45% before travel and rescue 60% of the rest; each guest kept is worth ~₹600 of future gross profit. That is ~₹4 crore of benefit, roughly cancelled by ~₹4 crore of top-ups, rescues, extra owner declines and running cost.</p>
+  <p>So this is a promise-keeping project that roughly pays for itself, not a profit project, and it loses money if owners abuse the free "no". Booking volume comes from India GBV in OYO's latest draft prospectus divided by an assumed booking value; the denial rate is an assumption because no per-booking figure is public. <a href="../strategy/impact_model.xlsx">Download the model</a> (live formulas, every input sourced or marked "assumption").</p>
+</section>
+
+<section class="s" id="measure">
+  <div class="num">07 · HOW WE'D KNOW</div>
+  <h2>One promise to measure, and the guardrails that matter</h2>
+  <ul class="tight">
+    <li><b>North star:</b> the share of prepaid bookings where the guest sleeps in a confirmed room at the price paid, with nothing extra at the desk. It can't be gamed by refunding people; its weakness is that it moves slowly.</li>
+    <li><b>Leading indicator:</b> the share of bookings owners confirm by the deadline.</li>
+    <li><b>Guardrails:</b> extra owner declines (kill above 0.3% of bookings), net cost per 1,000 bookings, owner churn, share of owner appeals upheld, and desk-report abuse.</li>
+    <li><b>Experiment:</b> randomised by property, not by guest, because the rules change the owner's behaviour. About 570 properties per arm for 8 weeks detects a 30% fall in desk denials.</li>
+  </ul>
+  <p><a href="../strategy/metrics.html">Metrics, experiment and risks</a>.</p>
+</section>
+
+<section class="s" id="method">
+  <div class="num">08 · METHOD AND LIMITS</div>
+  <h2>How this was done, and what it can't tell you</h2>
+  <div class="method">
+<!-- METHOD-NOTE:START -->
+<p><strong>How the reviews were coded.</strong> The reviews were coded by an AI model (Claude, made by Anthropic) against a written codebook, not by hand. Human validation of a random sample of 100 coded reviews is pending. Until it is done, treat every count from the reviews as AI-coded and not yet checked by a person.</p>
+<!-- METHOD-NOTE:END -->
+  </div>
+  <ul class="tight">
+    <li><b>Reviews show which problems exist and how they feel, not how often they happen per booking.</b> Reviewers skew angry: 93% of the denial reviews are 1-star.</li>
+    <li>No interviews with guests, owners or OYO staff were done. The owner side rests on 398 app reviews (most from before 2023), press coverage and consumer-court records.</li>
+    <li>OYO's in-app help flow, its denial penalty schedule and its real denial rate are not public; the impact model's two most important inputs are assumptions.</li>
+    <li>About 7% of denial reviews are clearly from outside India; leaving them out changes the headline shares by less than 2 points.</li>
+    <li>Every number on this page traces to the <a href="../research/review_analysis.html">review analysis</a>, the <a href="../strategy/impact_model.xlsx">impact model</a> or <a href="../research/sources.html">sources</a>; every quote is checked by script against the review data; the coding rules are in the <a href="../research/codebook.html">codebook</a>.</li>
+  </ul>
+</section>
+
+<section class="s" id="next">
+  <div class="num">09 · WHAT I'D DO NEXT</div>
+  <h2>Three questions to answer before building anything</h2>
+  <ol class="tight">
+    <li><b>Talk to five hotel owners or front-desk managers</b> about how they decide to refuse an OYO booking, and whether they would answer a 2 PM confirmation.</li>
+    <li><b>Ask someone at OYO for two numbers:</b> the real denial rate per prepaid booking, and how often today's rescue ends in a move rather than a refund.</li>
+    <li><b>Test the owner price floor:</b> let owners set a minimum price, with OYO funding discounts below it. It attacks the price dispute at its source but changes the business model, so it needs its own study.</li>
+  </ol>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p><b>Documents:</b> <a href="../research/review_analysis.html">Review analysis</a> · <a href="../research/feature_audit.html">Feature audit</a> · <a href="../research/sources.html">Sources</a> · <a href="../research/codebook.html">Codebook</a> · <a href="../strategy/problem.html">Problem</a> · <a href="../strategy/solutions.html">Solutions</a> · <a href="../strategy/metrics.html">Metrics</a> · <a href="../prd/PRD.html">PRD</a> · <a href="../prototype/index.html">Prototype</a> · <a href="../strategy/impact_model.xlsx">Impact model</a> · <a href="one_pager.pdf">One-page PDF</a></p>
+  <p>An independent student case study by Vansh Gupta. Not affiliated with, endorsed by or sponsored by OYO or its parent company. OYO's name is used only to identify the company studied; no OYO logo or app design is used, and all property names in the prototype are invented. Projected impact is under stated assumptions; nothing described here has been built or measured. App reviews collected 19 May 2025 to 20 November 2026.</p>
+</footer>
+</body>
+</html>

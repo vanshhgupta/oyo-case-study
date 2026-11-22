@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Problem: booked, but no room</title>
+<style>
+:root{--ink:#1d1b26;--muted:#5d5a6b;--line:#e4e1ea;--bg:#f7f6f2;--card:#ffffff;--accent:#4338ca;--warm:#b45309;--code:#efedf5}
+@media (prefers-color-scheme: dark){:root{--ink:#ecebf2;--muted:#aaa7b8;--line:#2e2c3a;--bg:#14131b;--card:#1c1b25;--accent:#a5b4fc;--warm:#f5b25b;--code:#24232f}}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.65 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+main{max-width:860px;margin:0 auto;padding:22px 16px 72px}
+a{color:var(--accent)} h1{font-size:clamp(26px,5vw,36px);line-height:1.15;letter-spacing:-.01em;margin:10px 0 18px}
+h2{font-size:22px;margin-top:38px;padding-top:14px;border-top:1px solid var(--line)} h3{font-size:18px;margin-top:26px}
+.tablewrap{overflow-x:auto;margin:12px 0} table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{color:var(--muted);font-weight:600}
+blockquote{margin:14px 0;padding:8px 16px;border-left:3px solid var(--warm);background:var(--card);border-radius:0 8px 8px 0}
+code{background:var(--code);border-radius:4px;padding:0 4px;font-size:90%} pre{background:var(--code);padding:12px;overflow-x:auto;border-radius:8px}
+.back{font-size:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted)}
+</style></head>
+<body><main>
+<p class="back"><a href="../case-study/index.html">← Back to the case study</a><span>Independent student case study · not affiliated with OYO</span></p>
+<h1>Problem: booked, but no room</h1>
+<h2>1. The problem in one sentence, in a guest's words</h2>
+<blockquote>
+<p>"A confirmed booking means nothing if guests are denied check-in upon arrival." (guest review, row 127, after waiting two to three hours at 3 AM to be told there was no room)</p>
+</blockquote>
+<p>In a product manager's words: <strong>an OYO guest with a confirmed, often prepaid booking reaches the property and is refused the room, and in most cases OYO neither rehouses them nor makes them whole quickly.</strong></p>
+<h2>2. Who it happens to</h2>
+<p>The reviews do not record who the guest is, so these segments come from what the reviews describe. Counts are reviews among the 600 denials where the situation is stated; most reviews state none, so the counts are floors, not shares.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>What the reviews describe</th>
+<th>Why the denial hurts them most</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Late arrivals in an unfamiliar city</strong></td>
+<td>Arriving at night or after midnight (56 reviews), often off a train or bus</td>
+<td>Fewest alternatives, least safety, phone battery and cash running out</td>
+</tr>
+<tr>
+<td><strong>Families and travellers with dependants</strong></td>
+<td>Children, parents or elderly relatives mentioned</td>
+<td>Cannot "just walk to the next hotel"</td>
+</tr>
+<tr>
+<td><strong>Purpose-bound travellers</strong></td>
+<td>Exams, interviews, hospital visits, weddings</td>
+<td>The trip cannot move, so the guest pays whatever the desk asks</td>
+</tr>
+<tr>
+<td><strong>Prepaid guests</strong></td>
+<td>242 reviews say they paid online or in advance</td>
+<td>Their money is with OYO, so they have no leverage at the desk and a refund fight afterwards</td>
+</tr>
+<tr>
+<td><strong>Couples and local-ID holders</strong></td>
+<td>15 reviews (3% of stated reasons)</td>
+<td>Refused under a rule OYO says the guest was shown; no refund is owed</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Serve first: prepaid guests arriving on the day of booking or the evening of travel.</strong> They are the largest group the reviews can identify, OYO already holds their money (so it can act without asking them to pay again), and they are where OYO's own promise ("shall ensure... alternate accommodation") is clearest. Couples and local-ID holders are deliberately not first: their refusals follow a disclosed rule, and the fix there is disclosure (idea 7 in <code>solutions.md</code>), not rescue.</p>
+<h2>3. Why the owner turns the guest away</h2>
+<p>This is the core of the problem, because the fix depends on which cause dominates. Shares are of the 479 denial reviews where the guest reports the hotel's reason (<code>research/review_analysis.md</code>, section 4).</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Cause</th>
+<th style="text-align: right;">Share of stated reasons</th>
+<th>What the owner is thinking</th>
+<th>Evidence from the owner side</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Property gone</strong>: closed, no longer with OYO, not at the pin</td>
+<td style="text-align: right;">25.7%</td>
+<td>Nothing; the owner has left. OYO's listing is stale.</td>
+<td>"Wants to leave OYO" and contract-exit complaints (5.5% of owner business reviews); guests quote desks saying "no tie-up with OYO"</td>
+</tr>
+<tr>
+<td><strong>No record / won't take OYO bookings</strong></td>
+<td style="text-align: right;">24.4%</td>
+<td>"This booking isn't real to me", or "I've stopped taking OYO guests"</td>
+<td>Owners describe "fake" bookings and bookings checked in by OYO staff (17% of owner business reviews, 29% since 2023)</td>
+</tr>
+<tr>
+<td><strong>Price dispute</strong>: "can't give it at this price"</td>
+<td style="text-align: right;">23.0%</td>
+<td>"OYO sold my room below what I'd accept, and I'll pay commission on top"</td>
+<td>OYO sets the price under the partner terms; 22% of owner business reviews say the price is cut below what they want</td>
+</tr>
+<tr>
+<td><strong>No room</strong>: full, sold to someone else, overbooked</td>
+<td style="text-align: right;">22.1%</td>
+<td>"A walk-in pays more and pays now", or a genuine double booking</td>
+<td>Guests report rooms "sold to someone else"; owners describe slow inventory tools</td>
+</tr>
+<tr>
+<td>ID, couple or house rule</td>
+<td style="text-align: right;">3.1%</td>
+<td>Local rules, police pressure, the owner's own policy</td>
+<td>OYO's guest policy allows these refusals and owes no refund</td>
+</tr>
+<tr>
+<td>Owner says OYO owes it money</td>
+<td style="text-align: right;">1.7%</td>
+<td>"I won't honour OYO bookings until I'm paid"</td>
+<td>Payouts are the top owner complaint (31% of owner business reviews)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>What the causes have in common.</strong> The first three, 73% of stated reasons, are cases where the owner's "no" already existed before the guest set out: the property had left, the hotel had stopped honouring OYO bookings, or the hotel would not take the price OYO had sold at. The partner terms explain why this "no" stays hidden until the desk: OYO "shall have exclusive rights to determine the pricing" and manages "100% of the Contracted Rooms inventory"; owners can move the price only "within a specified range" set by OYO's Tariff Manager (<code>research/sources.md</code>, A9); and the owner's app offers no step to accept or decline a booking (<code>research/feature_audit.md</code>, section 2). This is not new: in 2019, OYO itself told Reuters that it tags properties serving their notice period "that may deny check-ins to customers as 'sold out'" (sources, C1). The owner never says yes to a specific booking at a specific price, so the first moment the owner can say no is when the guest is standing at the counter.</p>
+<p><strong>The insight: check-in denial at OYO is a consent problem, not an arrival problem.</strong> OYO makes the promise on the owner's behalf; the owner disagrees with it at the only point it controls. That is why the existing rules, which forbid denial and fine the owner afterwards, do not prevent it.</p>
+<p><strong>How this differs from the Zomato study.</strong> There, the bottleneck was evidence: nobody could prove whether an item was missing. Here, the facts are rarely in dispute (the guest is visibly at the desk and the hotel openly says no). The bottleneck is timing and incentive: when the owner's refusal surfaces, and what it costs the owner to refuse early versus late.</p>
+<h2>4. The journey: where each failure could have been caught, and by whom</h2>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What happens today</th>
+<th>Failure that could be caught here</th>
+<th>Who could catch it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Listing</td>
+<td>OYO lists the property at an OYO-set price</td>
+<td><strong>Property gone</strong>: stale listing still sells</td>
+<td>OYO (listing health: no check-ins, failed calls, guest "closed" reports)</td>
+</tr>
+<tr>
+<td>2. Search and booking</td>
+<td>Guest books; OYO confirms instantly</td>
+<td>House rule not seen; price below owner's floor</td>
+<td>OYO (show rules up front); OYO pricing</td>
+</tr>
+<tr>
+<td>3. Booking reaches the hotel</td>
+<td>Appears in Co-OYO; no accept step</td>
+<td><strong>No record / won't take OYO</strong>: the hotel ignores or rejects it silently</td>
+<td>The owner, <em>if asked</em></td>
+</tr>
+<tr>
+<td>4. Hours before arrival</td>
+<td>Nothing systematic; some guests call and are told "full"</td>
+<td><strong>Price dispute, no room, won't take OYO</strong>: the owner's decision exists but is unspoken</td>
+<td>The owner, <em>if asked</em>; OYO acts on the answer</td>
+</tr>
+<tr>
+<td>5. At the desk</td>
+<td>Guest refused; calls OYO; holds</td>
+<td>Every cause surfaces here, at the worst time</td>
+<td>OYO support, with a clock and a budget</td>
+</tr>
+<tr>
+<td>6. Afterwards</td>
+<td>Refund in 7–14 days, wallet credit or nothing; owner penalty offset against payouts if applied</td>
+<td>Guest churns; owner resents an opaque deduction</td>
+<td>OYO (refund to source, visible penalty with evidence)</td>
+</tr>
+</tbody>
+</table></div>
+<p>Steps 3 and 4 are the gap. Nobody asks the owner, so nobody hears the "no".</p>
+<h2>5. Prevention or rescue: which matters more?</h2>
+<ul>
+<li><strong>Prevention</strong> means the guest never travels to a room that is not there. It can catch the 73% of stated causes whose "no" exists in advance, if the owner is asked and answering honestly is safe for the owner. It costs little per booking: a tap in the owner app, plus a rebooking made in daylight, before travel, with more inventory available.</li>
+<li><strong>Rescue</strong> means that when a denial still happens, the guest has a bed within minutes. It is needed for the 22% "no room" cases that arise on the day, for owners who confirm and then refuse anyway, and for unreachable properties. It is expensive per case (night-time rebooking, cab, support time), but it is what the guest remembers.</li>
+</ul>
+<p><strong>Prevention matters more for volume and cost; rescue matters more for trust.</strong> Because OYO already promises rescue on paper and the reviews show it rarely happens (5% rebooked), the MVP needs both: prevention to shrink the problem to a size where rescue is affordable, and a rescue with a clock so that the promise becomes real for what is left.</p>
+<h2>6. What it costs OYO</h2>
+<p>Order-of-magnitude reasoning; the numbers are in <code>impact_model.xlsx</code>.</p>
+<ul>
+<li><strong>Refunds and relocation.</strong> Under its own terms OYO owes a comparable room or a refund; in practice many denied guests describe no refund at all (25% "refund refused or money lost"), which is a liability rather than a saving.</li>
+<li><strong>Support load.</strong> Denial reviews often describe long support interactions (holds of 20 minutes to two hours, repeated calls), and 56% of them complain about handling.</li>
+<li><strong>Lost repeat bookings.</strong> A guest denied a prepaid room after a long journey is a likely lost customer. This is the largest cost in the model and the least certain.</li>
+<li><strong>Regulatory and legal exposure.</strong> Consumer commissions have held OYO liable in at least twelve denied-check-in cases and rejected its "only a platform" defence; one ₹414 booking became a refund plus ₹5,000 compensation and ₹3,000 costs (sources, D4). The Central Consumer Protection Authority has said it plans to hold hotel aggregators responsible for unanswered complaints (D2). OYO's own terms already let it recover consumer-forum costs from operators, which shows it knows the exposure exists.</li>
+<li><strong>Supply.</strong> Every unresolved denial is also a broken relationship with an owner. Fines without consent push owners towards leaving, which shows up next year as more "property gone" denials.</li>
+</ul>
+<h2>7. Out of scope</h2>
+<ul>
+<li><strong>Room quality and listing mismatch</strong> after check-in (15% and 10% of problems): a different journey stage with different fixes (audits, photo verification).</li>
+<li><strong>Refunds after a guest's own cancellation</strong> (9.5%): a policy question about cancellation terms and OYO Money.</li>
+<li><strong>Changing OYO's pricing model.</strong> The price dispute is a symptom of OYO setting prices. A price floor for owners is listed as a later idea, not part of the MVP, because it changes the core business model and needs data this study does not have.</li>
+<li><strong>Couple and local-ID policy itself</strong>: a legal and social question; the study only covers showing the rule before booking.</li>
+<li><strong>Markets outside India</strong>, although some reviews come from them.</li>
+</ul>
+</main></body></html>
